@@ -1,0 +1,306 @@
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   CHECKOUT — bolsa + pago de tres pasos con tarjeta en 3D (23-sep-2026)
+
+   Alex, 23-sep: "Para el carrito de compra hazlo así" + un reel de un checkout de cristal:
+   tarjeta en 3D que refleja lo que tecleas, se gira sola en el CVV, vuela al centro con un
+   borde que gira mientras procesa y se pone verde al pagar.
+
+   Módulo reutilizable: todo cuelga de estas variables, que por defecto heredan las del sitio.
+   Para otra web se cambian aquí cinco colores y nada más.
+
+   Reglas que cumple a propósito:
+   · Biblia web, Ley 1: solo se anima transform y opacity (el verde de la tarjeta es una capa
+     que entra por opacidad, el borde que gira es un transform: rotate).
+   · Ley 11: will-change solo mientras algo se mueve, lo pone y lo quita el JS.
+   · "el cristal es para la chrome": el cristal va en la bolsa y el pago, que son interfaz;
+     el contenido de la web no se toca.
+   · El acento sale del material de la web (el oro del perfume), no del dorado del vídeo.
+   ═══════════════════════════════════════════════════════════════════════════════════════════ */
+:root{
+  --co-accent:var(--gold,#E3A94E);
+  --co-accent-hi:var(--gold-hi,#F7D98C);
+  --co-ink:var(--ivory,#F4ECDD);
+  --co-muted:var(--muted,#B4A891);
+  --co-line:var(--line,rgba(244,236,221,.16));
+  --co-glass:rgba(16,11,8,.58);
+  --co-field:rgba(244,236,221,.045);
+  --co-ok:#2FBF84;
+  --co-ok-deep:#0E5A3E;
+  --co-bad:#E0776A;
+  --co-ease:var(--expo,cubic-bezier(.16,1,.3,1));
+  --co-serif:var(--serif,Georgia,serif);
+  --co-sans:var(--sans,system-ui,sans-serif);
+}
+
+/* ── botón de la bolsa en la barra ─────────────────────────────────────────────────────── */
+.co-bagbtn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+  flex:none;border-radius:50%;color:var(--co-ink);background:transparent;border:1px solid var(--co-line);cursor:pointer;
+  transition:border-color .3s,color .3s}
+.co-bagbtn:hover{border-color:var(--co-accent);color:var(--co-accent)}
+.co-bagbtn svg{width:15px;height:15px}
+.co-bagbtn b{position:absolute;top:-5px;right:-6px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;
+  font:500 .56rem/17px var(--co-sans);letter-spacing:0;text-align:center;color:#120c07;background:var(--co-accent);
+  transform:scale(0);transition:transform .45s var(--co-ease)}
+.co-bagbtn.has b{transform:scale(1)}
+.co-bagbtn.bump b{animation:co-bump .5s var(--co-ease)}
+@keyframes co-bump{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+
+/* ── "add to bag" en cada tarjeta de producto ──────────────────────────────────────────── */
+.co-add{margin-top:1rem;display:inline-flex;align-items:center;gap:.55rem;min-height:40px;padding:0 1.3rem;
+  font:400 .58rem/1 var(--co-sans);letter-spacing:.26em;text-transform:uppercase;color:var(--co-ink);
+  background:rgba(244,236,221,.04);border:1px solid rgba(227,169,78,.42);border-radius:100px;cursor:pointer;
+  transition:background-color .35s,border-color .35s,color .35s}
+.co-add:hover{background:var(--co-accent);border-color:var(--co-accent);color:#120c07}
+.co-add.done{background:var(--co-accent);border-color:var(--co-accent);color:#120c07}
+.co-add svg{width:12px;height:12px}
+
+/* ── velo común ────────────────────────────────────────────────────────────────────────── */
+.co-scrim{position:fixed;inset:0;z-index:80;background:rgba(4,3,2,.62);opacity:0;visibility:hidden;
+  transition:opacity .5s var(--co-ease),visibility .5s}
+.co-scrim.on{opacity:1;visibility:visible}
+
+/* ── la bolsa (panel lateral) ──────────────────────────────────────────────────────────── */
+.co-bag{position:fixed;top:0;right:0;bottom:0;z-index:81;width:min(420px,100vw);display:flex;flex-direction:column;
+  background:var(--co-glass);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);
+  border-left:1px solid var(--co-line);color:var(--co-ink);transform:translateX(104%);
+  transition:transform .7s var(--co-ease)}
+.co-bag.on{transform:none}
+.co-bag header{display:flex;align-items:center;justify-content:space-between;padding:1.6rem 1.6rem 1.2rem;
+  border-bottom:1px solid var(--co-line)}
+.co-bag h2{font:300 1.7rem/1 var(--co-serif);letter-spacing:.02em}
+.co-bag h2 small{font:400 .58rem/1 var(--co-sans);letter-spacing:.28em;text-transform:uppercase;color:var(--co-muted);margin-left:.7rem}
+.co-x{width:36px;height:36px;border-radius:50%;border:1px solid var(--co-line);background:none;color:var(--co-ink);cursor:pointer;
+  display:grid;place-items:center;transition:border-color .3s,color .3s}
+.co-x:hover{border-color:var(--co-accent);color:var(--co-accent)}
+.co-x svg{width:13px;height:13px}
+.co-lines{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:.6rem 1.6rem}
+.co-line{display:grid;grid-template-columns:72px 1fr auto;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid var(--co-line)}
+.co-line .th{width:72px;height:84px;border-radius:5px;display:grid;place-items:end center;overflow:hidden;
+  background:radial-gradient(70% 60% at 50% 45%,rgba(227,169,78,.14),transparent 72%),rgba(6,4,4,.5);border:1px solid rgba(227,169,78,.16)}
+.co-line .th img{width:84%;height:auto;display:block}
+.co-line h3{font:400 1.2rem/1.1 var(--co-serif)}
+.co-line p{font:400 .56rem/1.4 var(--co-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--co-muted);margin-top:.35rem}
+.co-qty{display:inline-flex;align-items:center;margin-top:.6rem;border:1px solid var(--co-line);border-radius:100px}
+.co-qty button{width:28px;height:26px;background:none;border:0;color:var(--co-ink);cursor:pointer;font:400 .9rem/1 var(--co-sans)}
+.co-qty span{min-width:18px;text-align:center;font:400 .72rem/1 var(--co-sans)}
+.co-line .amt{text-align:right;font:400 1.05rem/1 var(--co-serif);color:var(--co-accent-hi)}
+.co-line .rm{display:block;margin-top:.7rem;background:none;border:0;color:var(--co-muted);cursor:pointer;
+  font:400 .52rem/1 var(--co-sans);letter-spacing:.2em;text-transform:uppercase}
+.co-line .rm:hover{color:var(--co-ink)}
+.co-empty{padding:3rem 0;text-align:center;color:var(--co-muted);font:300 1.2rem/1.5 var(--co-serif);font-style:italic}
+.co-bag footer{padding:1.3rem 1.6rem 1.7rem;border-top:1px solid var(--co-line)}
+.co-row{display:flex;justify-content:space-between;align-items:baseline;font:400 .6rem/1 var(--co-sans);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--co-muted);padding:.4rem 0}
+.co-row strong{font:400 1.25rem/1 var(--co-serif);letter-spacing:0;text-transform:none;color:var(--co-ink)}
+.co-row.total strong{color:var(--co-accent-hi);font-size:1.5rem}
+.co-cta{width:100%;display:flex;align-items:center;justify-content:center;gap:.7rem;min-height:54px;margin-top:1rem;
+  font:500 .64rem/1 var(--co-sans);letter-spacing:.26em;text-transform:uppercase;color:#120c07;cursor:pointer;
+  border:0;border-radius:10px;background:linear-gradient(100deg,var(--co-accent-hi),var(--co-accent) 55%,#C9812E);
+  box-shadow:0 10px 30px -10px rgba(227,169,78,.55);transition:transform .2s,box-shadow .35s,opacity .3s}
+.co-cta:hover{box-shadow:0 14px 38px -8px rgba(227,169,78,.75)}
+.co-cta:active{transform:translateY(1px)}
+.co-cta:disabled{opacity:.4;cursor:default}
+.co-cta svg{width:14px;height:14px}
+
+/* ── el pago (modal de tres pasos) ─────────────────────────────────────────────────────── */
+.co{position:fixed;inset:0;z-index:82;display:grid;place-items:center;padding:clamp(.6rem,3vw,2.4rem);
+  visibility:hidden;pointer-events:none}
+.co.on{visibility:visible;pointer-events:auto}
+.co-panel{--cut:34px;position:relative;width:min(1080px,100%);max-height:calc(100svh - 1.2rem);display:flex;flex-direction:column;
+  color:var(--co-ink);opacity:0;transform:translateY(22px) scale(.985);
+  transition:opacity .6s var(--co-ease),transform .8s var(--co-ease)}
+.co.on .co-panel{opacity:1;transform:none}
+/* el cristal con las dos esquinas cortadas del vídeo: el filo es una capa, el relleno otra */
+.co-panel::before,.co-panel::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
+.co-panel::before{background:linear-gradient(135deg,rgba(247,217,140,.55),rgba(244,236,221,.12) 30%,rgba(244,236,221,.08) 70%,rgba(227,169,78,.45))}
+.co-panel::after{inset:1px;background:var(--co-glass);backdrop-filter:blur(26px) saturate(1.35);-webkit-backdrop-filter:blur(26px) saturate(1.35)}
+.co-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.3rem clamp(1.2rem,3vw,2.4rem);
+  border-bottom:1px solid var(--co-line)}
+.co-brand{display:flex;align-items:center;gap:.8rem;font:400 .58rem/1 var(--co-sans);letter-spacing:.3em;text-transform:uppercase;color:var(--co-muted)}
+.co-brand img{height:26px;width:auto}
+.co-steps{display:flex;align-items:center;gap:clamp(.7rem,2vw,1.6rem);font:400 .58rem/1 var(--co-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--co-muted)}
+.co-steps li{list-style:none;display:flex;align-items:center;gap:.5rem;transition:color .4s}
+.co-steps i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font:500 .55rem/1 var(--co-sans);font-style:normal;
+  border:1px solid var(--co-line);color:var(--co-muted);transition:background-color .4s,border-color .4s,color .4s}
+.co-steps i svg{width:9px;height:9px}
+.co-steps li.done i{border-color:var(--co-ok);color:var(--co-ok)}
+.co-steps li.now{color:var(--co-ink)}
+.co-steps li.now i{background:var(--co-accent);border-color:var(--co-accent);color:#120c07}
+.co-top .co-x{margin-left:.4rem}
+.co-body{position:relative;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:clamp(1.4rem,3vw,2.6rem) clamp(1.2rem,3vw,2.4rem)}
+.co-view{display:grid;grid-template-columns:1fr 1.08fr;gap:clamp(1.6rem,4vw,3.6rem);align-items:start}
+.co-view[hidden]{display:none}
+.co-view.enter{animation:co-in .7s var(--co-ease) both}
+@keyframes co-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.co-h{font:300 clamp(1.7rem,2.6vw,2.2rem)/1 var(--co-serif);letter-spacing:.01em}
+.co-sub{font:300 .86rem/1.5 var(--co-sans);color:var(--co-muted);margin:.5rem 0 1.4rem}
+
+/* resumen del pedido (paso de entrega) */
+.co-summary{padding:1.4rem;border:1px solid var(--co-line);border-radius:12px;background:rgba(244,236,221,.025)}
+.co-summary .co-line{grid-template-columns:56px 1fr auto;padding:.8rem 0}
+.co-summary .co-line .th{width:56px;height:64px}
+.co-summary .co-line h3{font-size:1.05rem}
+
+/* campos */
+.co-form{display:grid;grid-template-columns:1fr 1fr;gap:.95rem 1rem}
+.co-f{display:flex;flex-direction:column;gap:.45rem;grid-column:span 2}
+.co-f.half{grid-column:span 1}
+.co-f label{font:400 .56rem/1 var(--co-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--co-muted)}
+.co-in{position:relative;display:flex;align-items:center;gap:.7rem;min-height:50px;padding:0 1rem;border-radius:10px;
+  background:var(--co-field);border:1px solid var(--co-line);transition:border-color .3s,box-shadow .3s}
+.co-in:focus-within{border-color:var(--co-accent);box-shadow:0 0 0 3px rgba(227,169,78,.14)}
+.co-in.bad{border-color:var(--co-bad);box-shadow:0 0 0 3px rgba(224,119,106,.12)}
+.co-in svg{width:15px;height:15px;flex:none;color:var(--co-muted)}
+.co-in input,.co-in select{flex:1;min-width:0;height:48px;background:none;border:0;outline:0;color:var(--co-ink);
+  font:400 .95rem/1 var(--co-sans);letter-spacing:.04em;-webkit-appearance:none;appearance:none}
+.co-in select option{color:#120c07}
+.co-in input::placeholder{color:rgba(180,168,145,.5)}
+.co-in input.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.12em;font-size:.92rem}
+.co-in .brandtag{font:600 .66rem/1 var(--co-sans);letter-spacing:.12em;color:var(--co-ink);opacity:.85}
+.co-in .eye{background:none;border:0;padding:0;color:var(--co-muted);cursor:pointer;display:grid}
+.co-err{min-height:.8rem;font:400 .62rem/1.2 var(--co-sans);color:var(--co-bad);letter-spacing:.02em}
+.co-ship{display:grid;gap:.6rem;grid-column:span 2}
+.co-opt{display:flex;align-items:center;gap:.9rem;padding:1rem;border-radius:10px;border:1px solid var(--co-line);cursor:pointer;
+  background:var(--co-field);transition:border-color .3s}
+.co-opt input{accent-color:var(--co-accent)}
+.co-opt span{flex:1;font:400 .82rem/1.3 var(--co-sans)}
+.co-opt small{display:block;font-size:.66rem;color:var(--co-muted);margin-top:.2rem}
+.co-opt b{font:400 1rem/1 var(--co-serif);color:var(--co-accent-hi)}
+.co-opt:has(input:checked){border-color:var(--co-accent)}
+.co-back{display:inline-flex;align-items:center;gap:.5rem;margin:1rem auto 0;padding:.6rem 1.1rem;border-radius:100px;
+  background:none;border:1px solid var(--co-line);color:var(--co-muted);cursor:pointer;
+  font:400 .56rem/1 var(--co-sans);letter-spacing:.2em;text-transform:uppercase;transition:color .3s,border-color .3s}
+.co-back:hover{color:var(--co-ink);border-color:var(--co-ink)}
+.co-back svg{width:11px;height:11px}
+.co-actions{grid-column:span 2;display:flex;flex-direction:column}
+.co-total{grid-column:span 2;display:flex;justify-content:space-between;align-items:center;padding:1rem 1.1rem;border-radius:10px;
+  background:rgba(244,236,221,.03);border:1px solid var(--co-line);font:400 .74rem/1 var(--co-sans);color:var(--co-muted)}
+.co-total strong{font:400 1.45rem/1 var(--co-serif);color:var(--co-accent-hi)}
+
+/* ── la tarjeta en 3D ──────────────────────────────────────────────────────────────────── */
+.co-cardside{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.co-stage{position:relative;width:min(390px,100%);aspect-ratio:1.586;perspective:1300px}
+.co-ring{position:absolute;inset:-3px;border-radius:19px;overflow:hidden;opacity:0;transition:opacity .5s var(--co-ease)}
+/* el halo se funde con una máscara, no con overflow:hidden: recortado se leía como un bloque detrás */
+.co-halo{position:absolute;inset:-30px;opacity:0;pointer-events:none;transition:opacity .6s var(--co-ease);
+  -webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent);mask-image:radial-gradient(closest-side,#000 62%,transparent)}
+.co-halo i,.co-halo s{position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;margin:-75% 0 0 -75%;border-radius:50%;filter:blur(20px);
+  background:conic-gradient(from 0deg,transparent 0 50%,rgba(227,169,78,.9) 68%,rgba(247,217,140,.95) 76%,rgba(224,122,46,.9) 86%,transparent 97%)}
+.co-halo s{background:conic-gradient(from 0deg,transparent 0 48%,rgba(47,191,132,.9) 70%,rgba(154,242,201,.9) 80%,transparent 96%);opacity:0;transition:opacity .6s var(--co-ease)}
+.co-ring i,.co-ring s{position:absolute;left:50%;top:50%;width:160%;aspect-ratio:1;margin:-80% 0 0 -80%;
+  background:conic-gradient(from 0deg,rgba(227,169,78,.18) 0 40%,var(--co-accent) 60%,var(--co-accent-hi) 72%,#E07A2E 84%,rgba(227,169,78,.18) 97%)}
+.co-ring s{background:conic-gradient(from 0deg,transparent 0 50%,var(--co-ok) 72%,#9AF2C9 82%,transparent 96%);opacity:0;
+  transition:opacity .6s var(--co-ease)}
+.co-glow{position:absolute;inset:-18px;border-radius:30px;opacity:0;pointer-events:none;
+  background:radial-gradient(60% 60% at 50% 50%,rgba(227,169,78,.34),transparent 70%);transition:opacity .6s var(--co-ease)}
+.co-stage.busy .co-ring,.co-stage.busy .co-glow{opacity:1}
+.co-stage.busy .co-halo{opacity:.5}
+.co-stage.busy .co-ring i,.co-stage.busy .co-ring s,.co-stage.busy .co-halo i,.co-stage.busy .co-halo s{animation:co-spin 1.35s linear infinite}
+.co-stage.ok .co-ring s,.co-stage.ok .co-halo s{opacity:1}
+.co-stage.ok .co-glow{background:radial-gradient(60% 60% at 50% 50%,rgba(47,191,132,.34),transparent 70%)}
+@keyframes co-spin{to{transform:rotate(360deg)}}
+.co-tilt{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .35s var(--co-ease)}
+.co-card{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .9s var(--co-ease)}
+.co-card.flip{transform:rotateY(180deg)}
+.co-face{position:absolute;inset:0;border-radius:16px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  padding:7% 7.5%;display:flex;flex-direction:column;
+  background:
+    radial-gradient(120% 90% at 100% 0%,rgba(227,169,78,.22),transparent 55%),
+    radial-gradient(90% 80% at 0% 100%,rgba(132,210,222,.10),transparent 60%),
+    linear-gradient(145deg,#1C1712,#0D0A08 60%,#15100B);
+  border:1px solid rgba(247,217,140,.28);box-shadow:0 30px 60px -24px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.08)}
+.co-face::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,240,210,.13) 45%,transparent 58%);
+  transform:translateX(var(--sheen,-30%));transition:transform .5s var(--co-ease)}
+.co-face .okfill{position:absolute;inset:0;opacity:0;transition:opacity .7s var(--co-ease);
+  background:radial-gradient(120% 90% at 100% 0%,rgba(154,242,201,.28),transparent 55%),linear-gradient(145deg,#15764F,var(--co-ok-deep) 65%,#0B4A33)}
+.co-stage.ok .co-face .okfill{opacity:1}
+.co-face>*{position:relative}
+.co-front .r1{display:flex;align-items:center;gap:.7rem}
+.co-chip{width:15%;aspect-ratio:1.3;border-radius:5px;background:linear-gradient(135deg,#F7D98C,#C98F3A 60%,#EBC06E);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.co-chip{background-image:linear-gradient(90deg,transparent 32%,rgba(0,0,0,.18) 33% 35%,transparent 36% 64%,rgba(0,0,0,.18) 65% 67%,transparent 68%),
+  linear-gradient(0deg,transparent 46%,rgba(0,0,0,.18) 47% 53%,transparent 54%),linear-gradient(135deg,#F7D98C,#C98F3A 60%,#EBC06E)}
+.co-front .nfc{width:6%;opacity:.75;color:var(--co-ink)}
+.co-front .tier{margin-left:auto;font:500 clamp(.5rem,1.4vw,.62rem)/1 var(--co-sans);letter-spacing:.3em;color:var(--co-accent-hi)}
+.co-num{margin-top:auto;font:500 clamp(1rem,3.4vw,1.42rem)/1 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.1em;
+  color:var(--co-ink);text-shadow:0 1px 0 rgba(0,0,0,.4);white-space:nowrap}
+.co-num span{display:inline-block;transition:transform .35s var(--co-ease),opacity .35s}
+.co-num span.pop{animation:co-pop .35s var(--co-ease)}
+@keyframes co-pop{from{transform:translateY(-35%);opacity:0}to{transform:none;opacity:1}}
+.co-front .r3{display:flex;align-items:flex-end;gap:1.1rem;margin-top:auto}
+.co-front .r3 small{display:block;font:400 clamp(.4rem,1.1vw,.5rem)/1 var(--co-sans);letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(244,236,221,.5);margin-bottom:.35rem}
+.co-front .r3>div{min-width:0}
+.co-front .r3>div:first-child{flex:1}
+.co-front .r3 .c-name,.co-front .r3 .c-exp{font:500 clamp(.66rem,1.8vw,.84rem)/1 var(--co-sans);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--co-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.co-front .net{margin-left:auto;font:italic 800 clamp(1rem,3vw,1.35rem)/1 var(--co-sans);letter-spacing:.02em;color:var(--co-ink)}
+.co-rear{padding:0}
+.co-card .co-rear{transform:rotateY(180deg)}
+.co-rear .stripe{height:20%;margin-top:9%;background:linear-gradient(#050403,#16110c)}
+.co-rear .sig{display:flex;align-items:center;gap:.6rem;margin:7% 7.5% 0}
+.co-rear .sig i{flex:1;height:34px;border-radius:4px;background:repeating-linear-gradient(115deg,rgba(244,236,221,.14) 0 6px,rgba(244,236,221,.06) 6px 12px)}
+.co-rear .sig b{min-width:58px;height:34px;display:grid;place-items:center;border-radius:4px;background:var(--co-ink);color:#120c07;
+  font:600 .9rem/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em}
+.co-rear p{margin:6% 7.5% 0;font:400 .5rem/1.5 var(--co-sans);color:rgba(244,236,221,.42);letter-spacing:.04em}
+.co-flipbtn{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1rem;border-radius:100px;border:1px solid var(--co-line);
+  background:rgba(244,236,221,.03);color:var(--co-muted);cursor:pointer;font:400 .56rem/1 var(--co-sans);letter-spacing:.2em;
+  text-transform:uppercase;transition:color .3s,border-color .3s}
+.co-flipbtn:hover{color:var(--co-ink);border-color:var(--co-ink)}
+.co-flipbtn svg{width:11px;height:11px}
+.co-safe{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1.2rem;font:400 .56rem/1.4 var(--co-sans);letter-spacing:.08em;color:var(--co-muted)}
+.co-safe span{display:inline-flex;align-items:center;gap:.4rem}
+.co-safe svg{width:11px;height:11px;color:var(--co-ok)}
+.co-demo{font:400 .6rem/1.45 var(--co-sans);color:var(--co-muted);text-align:center;max-width:30em}
+.co-demo button{background:none;border:0;padding:0;color:var(--co-accent);cursor:pointer;font:inherit;text-decoration:underline;text-underline-offset:3px}
+
+/* ── procesando y hecho: la tarjeta sola en el centro ─────────────────────────────────── */
+.co-finale{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;
+  padding:2rem;text-align:center;pointer-events:none}
+.co-finale[hidden]{display:none}
+.co-slot{width:min(390px,86vw);display:flex;justify-content:center}
+.co-slot .co-stage{width:100%}
+.co-finale .msg{min-height:9.5rem;opacity:0;transform:translateY(10px);transition:opacity .5s var(--co-ease),transform .6s var(--co-ease)}
+.co-finale .msg.on{opacity:1;transform:none}
+.co-spin{width:24px;height:24px;margin:0 auto .9rem;border-radius:50%;border:2px solid rgba(227,169,78,.22);border-top-color:var(--co-accent);
+  animation:co-spin .9s linear infinite}
+.co-finale h3{font:300 clamp(1.5rem,3vw,2rem)/1.1 var(--co-serif)}
+.co-finale p{font:300 .86rem/1.5 var(--co-sans);color:var(--co-muted);margin-top:.5rem}
+.co-finale p strong{color:var(--co-accent-hi);font-weight:400}
+.co-check{width:44px;height:44px;margin:0 auto .8rem;color:var(--co-ok)}
+.co-check circle,.co-check path{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.co-check circle{stroke-dasharray:139;stroke-dashoffset:139;animation:co-draw .7s var(--co-ease) forwards}
+.co-check path{stroke-dasharray:30;stroke-dashoffset:30;animation:co-draw .45s var(--co-ease) .45s forwards}
+@keyframes co-draw{to{stroke-dashoffset:0}}
+.co-finale .co-cta{pointer-events:auto;width:auto;padding:0 2rem;margin:1.4rem auto 0}
+.co-body.leaving .co-view{opacity:0;transform:translateY(8px);transition:opacity .45s var(--co-ease),transform .5s var(--co-ease)}
+
+/* ── móvil ─────────────────────────────────────────────────────────────────────────────── */
+@media(max-width:860px){
+  .co{padding:0;place-items:stretch}
+  .co-panel{--cut:22px;width:100%;max-height:100svh;height:100svh}
+  .co-view{grid-template-columns:1fr;gap:1.6rem}
+  .co-steps span{display:none}
+  .co-brand em{display:none}
+  .co-stage{width:min(340px,100%)}
+  /* en el móvil la tarjeta se queda fija arriba mientras se rellena: si se va de la pantalla,
+     no se ve escribirse, y eso es lo que enseña el vídeo de referencia */
+  .co-view[data-v="payment"] .co-cardside{position:sticky;top:calc(-1 * clamp(1.4rem,3vw,2.6rem));z-index:3;
+    margin:calc(-1 * clamp(1.4rem,3vw,2.6rem)) calc(-1 * clamp(1.2rem,3vw,2.4rem)) 0;padding:1rem clamp(1.2rem,3vw,2.4rem) 1.1rem;
+    background:linear-gradient(rgba(14,10,7,.98) 88%,rgba(14,10,7,0));gap:.6rem}
+  .co-view[data-v="payment"] .co-cardside .co-stage{width:min(270px,72vw)}
+  .co-view[data-v="payment"] .co-safe{display:none}
+  .co-view[data-v="payment"] input{scroll-margin-top:250px}   /* el campo no se esconde bajo la tarjeta fija */
+  .co-slot{width:min(340px,86vw)}
+}
+@media(max-width:480px){.co-form{grid-template-columns:1fr}.co-f.half{grid-column:span 2}}
+/* táctil: el cristal sin desenfoque (biblia §9: iOS re-desenfoca en cada frame) */
+@media(pointer:coarse){
+  .co-bag,.co-panel::after{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(16,11,8,.94)}
+}
+@media(prefers-reduced-motion:reduce){
+  .co-card,.co-tilt,.co-bag,.co-panel{transition-duration:.01s}
+  .co-stage.busy .co-ring i,.co-stage.busy .co-ring s,.co-stage.busy .co-halo i,.co-stage.busy .co-halo s{animation-duration:4s}
+}

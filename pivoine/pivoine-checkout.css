@@ -1,0 +1,57 @@
+/* ═══ PIVOINE — the Parfum checkout, in daylight ═════════════════════════════════════════
+   checkout.css is the shared module and stays untouched (it is dark and gold, for Parfum).
+   This layer re-themes it for a light site: plum ink instead of ivory, the mauve of the
+   lacquer instead of gold, a pearl glass instead of a smoked one — and every text at 14 px
+   or more, because below that APCA has no passing contrast (el-umbral-de-apca...). The 3D
+   card stays dark on purpose: it is a card, and its type stays light on it. */
+:root{
+  --co-accent:#7A4B78; --co-accent-hi:#5A2F58; --co-ink:#2A1830; --co-muted:#4E3A55;
+  --co-line:rgba(42,24,48,.14); --co-glass:rgba(251,246,249,.88); --co-field:rgba(42,24,48,.035);
+  --co-serif:"Playfair Display",Georgia,serif; --co-sans:"Manrope",Helvetica,Arial,sans-serif;
+}
+.co-bagbtn{width:42px;height:42px;color:var(--co-ink);border-color:rgba(42,24,48,.2);background:rgba(255,255,255,.5)}
+.co-bagbtn svg{width:18px;height:18px}
+.co-bagbtn b{color:#fff;font:700 .72rem/17px var(--co-sans)}
+.co-add{font:700 .875rem/1 var(--co-sans);letter-spacing:.04em;text-transform:none;color:#fff;min-height:46px;padding:0 1.4rem;
+  background:linear-gradient(135deg,#9A6497,#7A4B78 60%,#5F3A5E);border:0;box-shadow:0 8px 22px -10px rgba(95,58,94,.65)}
+.co-add:hover,.co-add.done{background:linear-gradient(135deg,#A8729F,#7A4B78 60%,#5F3A5E);color:#fff}
+.co-scrim{background:rgba(42,24,48,.3)}
+.co-bag h2{font-weight:500}
+.co-bag h2 small,.co-row,.co-line p,.co-line .rm,.co-f label,.co-brand,.co-steps,.co-back,.co-flipbtn,.co-safe,.co-demo{font-size:.875rem;letter-spacing:.04em}
+.co-row{text-transform:none}
+.co-line p,.co-f label,.co-back,.co-flipbtn,.co-bag h2 small{text-transform:none}
+.co-line .th{background:radial-gradient(70% 60% at 50% 45%,rgba(214,160,200,.25),transparent 72%),#F7EEF3;border:1px solid rgba(122,75,120,.16)}
+.co-line .amt,.co-row.total strong,.co-opt b,.co-total strong,.co-finale p strong{color:var(--co-accent-hi);font-weight:600}
+.co-qty span{font-size:.875rem}
+.co-cta{font:700 .95rem/1 var(--co-sans);letter-spacing:.04em;text-transform:none;color:#fff;
+  background:linear-gradient(100deg,#9A6497,#7A4B78 55%,#5F3A5E);box-shadow:0 10px 30px -10px rgba(95,58,94,.6)}
+.co-cta:hover{box-shadow:0 14px 38px -8px rgba(95,58,94,.75)}
+.co-steps li.now i{color:#fff}
+.co-panel::before{background:linear-gradient(135deg,rgba(214,160,200,.7),rgba(42,24,48,.08) 30%,rgba(42,24,48,.06) 70%,rgba(154,100,151,.5))}
+.co-summary,.co-total{background:rgba(42,24,48,.03)}
+.co-in:focus-within{box-shadow:0 0 0 3px rgba(122,75,120,.16)}
+.co-in input::placeholder{color:rgba(78,58,85,.55)}
+.co-in select option{color:#2A1830}
+.co-sub,.co-finale p{font-size:1rem;font-weight:500}
+.co-opt span{font-size:.95rem}.co-opt small{font-size:.875rem}
+.co-err{font-size:.875rem}
+.co-flipbtn{background:rgba(42,24,48,.03)}
+.co-spin{border-color:rgba(122,75,120,.22);border-top-color:var(--co-accent)}
+.co-halo i{background:conic-gradient(from 0deg,transparent 0 50%,rgba(154,100,151,.9) 68%,rgba(233,190,224,.95) 76%,rgba(122,75,120,.9) 86%,transparent 97%)}
+.co-ring i{background:conic-gradient(from 0deg,rgba(122,75,120,.18) 0 40%,#7A4B78 60%,#E0B8D8 72%,#9A6497 84%,rgba(122,75,120,.18) 97%)}
+.co-glow{background:radial-gradient(60% 60% at 50% 50%,rgba(214,160,200,.4),transparent 70%)}
+/* the card itself: dark plum lacquer, light type on it */
+.co-face{background:radial-gradient(120% 90% at 100% 0%,rgba(214,160,200,.25),transparent 55%),
+  radial-gradient(90% 80% at 0% 100%,rgba(185,166,217,.14),transparent 60%),linear-gradient(145deg,#3A2140,#1E1022 60%,#2C1830);
+  border-color:rgba(233,200,226,.3)}
+.co-num,.co-front .r3 .c-name,.co-front .r3 .c-exp,.co-front .net,.co-front .nfc{color:#F7EEF5}
+.co-front .tier{color:#E9C9E4}
+.co-front .r3 small{color:rgba(247,238,245,.6)}
+.co-rear .sig b{background:#F7EEF5;color:#2A1830}
+.co-rear p{color:rgba(247,238,245,.55)}
+@media(max-width:860px){
+  .co-view[data-v="payment"] .co-cardside{background:linear-gradient(rgba(251,246,249,.98) 88%,rgba(251,246,249,0))}
+}
+@media(pointer:coarse){
+  .co-bag,.co-panel::after{background:rgba(251,246,249,.97)}
+}

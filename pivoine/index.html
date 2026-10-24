@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en" class="nojs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-visual">
+<title>Pivoine — Peony Skincare</title>
+<meta name="description" content="Peony renewal cream with hyaluronic acid, in a crystal jar with a lacquer cap. Small batches, shipped from New York.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="checkout.css">
+<link rel="stylesheet" href="pivoine-checkout.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ PIVOINE — one continuous scroll-film, light ═══════════════════════
+   The page is the film: a peony opens, the jar rises out of it, the camera
+   climbs, the cap comes off straight up and the camera ends looking down
+   into the cream. SCRUBBED by scroll on a canvas from pre-decoded
+   ImageBitmaps — the engine of galatea/ (ascenta-parfum's, WEB-QUALITY-BIBLE §4
+   and §10), with one art-directed reel per device class: 16:9 for desktop
+   and a real 9:16 reel for phones. The cart is the Parfum checkout module
+   re-themed for daylight (pivoine-checkout.css). No veils, no glass boxes
+   over content; glass only on the chrome and the cart. */
+:root{
+  /* measured with APCA (size- and weight-dependent threshold) against the pearl air of the reel:
+     ink 86.8, ink2 84.3, vtext 80.8 — the button violet (67.9) is for fills only, never for text */
+  --air:#F4E8EE; --ink:#24121F; --ink2:#301A2C; --vtext:#4A2346; --violet:#7A4B78; --violet-hi:#9A6497; --lilac:#C49BC1;
+  --line:rgba(36,18,31,.16); --line-2:rgba(122,75,120,.5);
+  --serif:"Playfair Display",Georgia,serif;
+  --sans:"Manrope",Helvetica,Arial,sans-serif;
+  --expo:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{background:var(--air);color:var(--ink);font-family:var(--sans);font-weight:500;
+  font-size:1.125rem;line-height:1.65;text-rendering:optimizeLegibility}
+::selection{background:var(--violet);color:#fff}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--violet-hi);outline-offset:4px}
+
+#film{position:fixed;inset:0;width:100%;height:100%;height:100lvh;display:block;z-index:0;background:var(--air);pointer-events:none}
+
+.veil{position:fixed;inset:0;z-index:60;display:grid;place-content:center;gap:1.4rem;justify-items:center;
+  background:var(--air);transition:opacity .45s var(--expo),visibility .45s}
+.veil.gone{opacity:0;visibility:hidden}
+.veil b{font-family:var(--serif);font-weight:500;letter-spacing:.42em;text-indent:.42em;font-size:1.7rem;color:var(--ink)}
+.veil .bar{width:min(190px,46vw);height:2px;background:var(--line)}
+.veil .bar span{display:block;height:100%;width:0;background:var(--violet);transition:width .4s var(--expo)}
+.veil small{font-size:.875rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--ink2)}
+
+.prog{position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;
+  background:linear-gradient(90deg,var(--lilac),var(--violet));z-index:50}
+
+/* ── glass nav (chrome only) ── */
+.nav{position:fixed;top:calc(1.1rem + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:46;max-width:calc(100vw - 1.6rem)}
+.pill{display:flex;align-items:center;gap:clamp(.9rem,2vw,1.6rem);padding:.5rem .5rem .5rem 1.5rem;border-radius:100px;
+  background:rgba(246,245,250,.6);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);
+  border:1px solid rgba(255,255,255,.75)}
+.pill .brand{font-family:var(--serif);font-weight:600;font-size:1.2rem;letter-spacing:.28em;color:var(--ink);white-space:nowrap}
+.pill a.link{font-size:.95rem;font-weight:700;letter-spacing:.04em;color:var(--ink);transition:color .3s;white-space:nowrap}
+.pill a.link:hover{color:var(--violet)}
+@media(max-width:760px){.pill a.link{display:none}.pill{padding:.42rem .42rem .42rem 1.15rem;gap:1rem}.pill .brand{font-size:1.1rem}}
+@media(pointer:coarse){.pill{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(246,245,250,.92)}}
+
+/* ── the button: violet from the silk, with its own soft light. The halo breathes on
+   opacity only (Law 1) and stops for reduced motion. ── */
+.btn,.pbook{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:100px;font-weight:600;color:#fff;letter-spacing:.04em;
+  background:linear-gradient(135deg,var(--violet-hi) 0%,var(--violet) 62%,#5F3A5E 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 28px -10px rgba(95,58,94,.7);
+  transition:transform .25s var(--expo),box-shadow .35s}
+.btn{min-height:56px;padding:0 2rem;font-size:.95rem}
+.pbook{min-height:42px;padding:0 1.25rem;font-size:.875rem}
+.btn::before,.pbook::before{content:"";position:absolute;inset:-7px;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(226,160,205,.6),rgba(226,160,205,0));filter:blur(10px);
+  opacity:.55;animation:halo 3.6s ease-in-out infinite}
+.btn:hover,.pbook:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 16px 36px -12px rgba(95,58,94,.8)}
+.btn:hover::before,.pbook:hover::before{opacity:1;animation:none}
+.btn:active{transform:translateY(0)}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.btn[disabled]::before{display:none}
+@keyframes halo{0%,100%{opacity:.4}50%{opacity:.85}}
+.tlink{font-size:1rem;font-weight:700;color:var(--vtext);padding-bottom:3px;border-bottom:2px solid rgba(122,75,120,.35);transition:border-color .35s}
+.tlink:hover{border-color:var(--violet)}
+
+/* ── reveals ── */
+.ln{display:block;overflow:hidden;padding-bottom:.08em}
+.ln>i{display:block;font-style:inherit;transform:translateY(115%);transition:transform 1.2s var(--expo) var(--d,0s)}
+.in .ln>i,.ready .hero .ln>i{transform:none}
+.rise{opacity:0;transform:translateY(16px);transition:opacity 1.1s ease var(--d,.05s),transform 1.2s var(--expo) var(--d,.05s)}
+.in .rise,.ready .hero .rise{opacity:1;transform:none}
+.hint{opacity:0;transition:opacity 1s var(--expo) var(--d,.7s)}
+.ready .hint{opacity:1}
+.ready.scrolled .hint{opacity:0;pointer-events:none;transition:opacity .5s ease}
+
+/* ── type: nothing under 14 px (APCA has no passing contrast below it) ── */
+.eyebrow{font-size:.875rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--vtext)}
+.display{font-family:var(--serif);font-weight:500;line-height:1.04;letter-spacing:-.01em;color:var(--ink)}
+.display em{font-style:italic;font-weight:400}
+.body{color:var(--ink2);font-size:1.12rem;font-weight:600;max-width:28em}
+
+/* ── scenes: transparent, the film shows through. Desktop: a left column centred in the
+   clean air in front of her profile (the silk now lives behind her, on the right). ── */
+.scene{position:relative;z-index:2;min-height:100svh;display:flex;align-items:center;
+  padding:6.5rem clamp(1.5rem,3.5vw,4.5rem) 3rem}
+.col{width:min(25rem,21vw)}   /* the jar sits centred and large: the column stays left of it (measured at 1440x900: jar from x=0.31) */
+.rule{width:56px;height:2px;background:var(--line-2);margin-bottom:1.4rem}
+.scene .eyebrow{margin-bottom:1rem}
+.scene .display{font-size:clamp(2.2rem,3.1vw,3.4rem);margin-bottom:1.1rem}
+
+.hero .eyebrow{margin-bottom:1.3rem}
+.hero .title{font-size:clamp(2.6rem,3.9vw,4.4rem);margin-bottom:1.3rem}
+.hero .sub{font-size:1.14rem;font-weight:600;color:var(--ink);max-width:25em}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:1.6rem;margin-top:2.2rem}
+.scroll-hint{position:absolute;left:clamp(1.5rem,6vw,6.5rem);bottom:clamp(1.6rem,5vh,2.6rem);
+  display:flex;align-items:center;gap:.7rem;font-size:.875rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2)}
+.scroll-hint i{width:2px;height:34px;background:linear-gradient(var(--violet),transparent);animation:drop 2.2s var(--expo) infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+.tlist{border-top:1px solid var(--line);margin-top:.4rem}
+.trow{display:grid;grid-template-columns:2.4rem 1fr;gap:.25rem 1rem;padding:1.05rem 0;border-bottom:1px solid var(--line)}
+.trow .num{font-family:var(--serif);font-style:italic;font-size:1.2rem;color:var(--vtext);line-height:1.55}
+.trow h3{font-family:var(--serif);font-weight:500;font-size:1.4rem;line-height:1.2;color:var(--ink)}
+.trow p{grid-column:2;font-size:1.05rem;font-weight:600;color:var(--ink);line-height:1.45}
+.trow .meta{grid-column:2;font-size:.875rem;font-weight:700;letter-spacing:.08em;color:var(--vtext);margin-top:.2rem}
+
+.clinic .pull{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(2rem,3.1vw,3rem);line-height:1.18;color:var(--ink)}
+.clinic .small{margin-top:1.6rem;font-size:.875rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+.book .hours{margin-top:1.3rem;font-size:.875rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+
+.foot{position:relative;z-index:2;min-height:92svh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 clamp(1.5rem,6vw,6.5rem) clamp(1.8rem,4vh,2.6rem);
+  background:linear-gradient(to bottom,rgba(244,232,238,0) 0%,rgba(244,232,238,.9) 30%,var(--air) 55%)}
+.foot-in{width:100%;max-width:76rem;margin:0 auto}
+.fmain{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:clamp(2rem,5vw,4rem);padding-bottom:2.4rem;border-bottom:1px solid var(--line)}
+.flogo{font-family:var(--serif);font-weight:600;font-size:1.8rem;letter-spacing:.3em;margin-bottom:1.2rem}
+.ftag{color:var(--ink2);font-size:1.02rem;line-height:1.7;max-width:26em}
+.fcol h4{font-size:.875rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--vtext);margin-bottom:1.1rem}
+.fcol a,.fcol button{display:block;font-size:1.02rem;font-weight:500;color:var(--ink);padding:.3rem 0;text-align:left;transition:color .3s}
+.fcol a:hover,.fcol button:hover{color:var(--violet)}
+.fcol p{font-size:1rem;line-height:1.7;color:var(--ink2);margin-bottom:.8rem}
+.fbar{display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between;align-items:center;padding-top:1.5rem}
+.fbar span,.flegal a{font-size:.875rem;font-weight:600;color:var(--ink2)}
+.flegal{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem}
+@media(max-width:820px){.fmain{grid-template-columns:1fr 1fr;gap:2rem 1.5rem}.fmain>div:first-child{grid-column:1/-1}}
+
+/* ── phones: the 9:16 reel keeps her head in the LOWER part of the frame (top of the hair
+   at ~0.37 of the height, measured), so every block sits in the clean air at the TOP. ── */
+@media(max-aspect-ratio:85/100){
+  .scene{align-items:flex-start;padding:calc(5.4rem + env(safe-area-inset-top,0px)) 1.3rem 2rem}
+  .col{width:100%;max-width:30rem}
+  .rule,.hero .eyebrow,.scroll-hint{display:none}
+  .scene .eyebrow{margin-bottom:.4rem}
+  .hero .title{font-size:clamp(2.2rem,9.6vw,2.7rem);margin-bottom:.55rem}
+  .hero .sub{font-size:1.06rem;line-height:1.45;color:var(--ink)}
+  .scene .display{font-size:clamp(1.95rem,8.4vw,2.4rem);margin-bottom:.5rem}
+  .body{font-size:1.06rem;line-height:1.5;color:var(--ink)}
+  .actions{margin-top:.9rem;gap:1.1rem}
+  .btn{min-height:50px;padding:0 1.5rem;font-size:.92rem}
+  .tlist{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem;border-top:0;margin-top:.2rem}
+  .trow{display:block;padding:.5rem 0;border-bottom:1px solid var(--line)}
+  .trow .num,.trow p{display:none}
+  .trow h3{font-size:1.06rem;line-height:1.2}
+  .trow .meta{font-size:.875rem;letter-spacing:.02em;margin-top:.15rem}
+  .clinic .pull{font-size:clamp(1.5rem,6.6vw,1.9rem)}
+  .clinic .small{margin-top:.7rem}
+  .book .hours{display:none}
+  .foot{padding-left:1.3rem;padding-right:1.3rem}
+  /* on the 9:16 reel the product climbs into the upper half in these beats: headline only */
+  .hero .sub,#texture .body,#line .body{display:none}
+}
+@media(prefers-reduced-motion:reduce){.btn::before,.pbook::before{animation:none}}
+
+/* ── the line: a section of its own on the pearl air (the film has ended above it). Not a
+   glass box over the film — content on its own field. ── */
+.collection{position:relative;z-index:2;padding:9rem clamp(1.5rem,6vw,6.5rem) 5rem;
+  background:linear-gradient(to bottom,rgba(244,232,238,0),rgba(244,232,238,.94) 12%,var(--air) 22%)}
+.chead{max-width:44rem;margin:0 auto 3.2rem;text-align:center}
+.chead .display{font-size:clamp(2.6rem,4vw,4rem);margin:.8rem 0 1rem}
+.chead .body{margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2vw,1.8rem);max-width:80rem;margin:0 auto}
+.pcard{display:flex;flex-direction:column;align-items:center;text-align:center}
+.pframe{width:100%;aspect-ratio:4/5;border-radius:20px;overflow:hidden;background:#F1E4EB}
+.pframe img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--expo)}
+@media(hover:hover){.pcard:hover .pframe img{transform:scale(1.035)}}
+.pinfo{margin-top:1.1rem}
+.pinfo h3{font-family:var(--serif);font-weight:500;font-size:1.45rem;line-height:1.15;color:var(--ink)}
+.pinfo .pnote{font-size:.95rem;color:var(--ink2);margin-top:.3rem}
+.pinfo .pprice{display:block;font-size:1.1rem;font-weight:700;color:var(--vtext);margin-top:.35rem}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-aspect-ratio:85/100){.collection{padding:6rem 1.3rem 4rem}.chead{margin-bottom:2rem;text-align:left}.chead .display{font-size:2.3rem}}
+
+@media(prefers-reduced-motion:reduce){.ln>i{transform:none}.rise{opacity:1;transform:none}.scroll-hint i{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="film"></canvas>
+<div class="prog"></div>
+<div id="dbg" style="position:fixed;left:10px;bottom:10px;z-index:99;font:11px/1.55 ui-monospace,monospace;color:#9feed6;background:rgba(0,0,0,.74);padding:9px 12px;border:1px solid #333;border-radius:7px;white-space:pre;display:none;pointer-events:none"></div>
+
+<div class="veil" id="veil"><b>PIVOINE</b><div class="bar"><span id="bar"></span></div><small>Peony skincare</small></div>
+
+<nav class="nav"><div class="pill">
+  <a class="brand" href="#top" aria-label="Pivoine — back to top">PIVOINE</a>
+  <a class="link" href="#bloom">The flower</a>
+  <a class="link" href="#cream">The cream</a>
+  <a class="link" href="#collection">The line</a>
+  <span data-co-bag></span>
+  <a class="pbook" href="#collection">Shop</a>
+</div></nav>
+
+<header class="scene hero" id="top">
+  <div class="col">
+    <p class="eyebrow rise" style="--d:.1s">Peony skincare · Small batches</p>
+    <h1 class="display title">
+      <span class="ln"><i style="--d:.15s">Peony,</i></span>
+      <span class="ln"><i style="--d:.26s">at first <em>bloom.</em></i></span>
+    </h1>
+    <p class="sub rise" style="--d:.5s">A renewal cream made with peony extract and hyaluronic acid, in a crystal jar you'll want to keep.</p>
+    <div class="actions rise" style="--d:.62s">
+      <button class="btn" type="button" data-co-add-sku="cream">Add to bag · $128</button>
+      <a class="tlink" href="#collection">See the line</a>
+    </div>
+  </div>
+  <div class="scroll-hint hint">Scroll <i></i></div>
+</header>
+
+<section class="scene" id="bloom">
+  <div class="col">
+    <div class="rule"></div>
+    <p class="eyebrow"><span class="ln"><i>The flower</i></span></p>
+    <h2 class="display">
+      <span class="ln"><i>Picked at dawn,</i></span>
+      <span class="ln"><i style="--d:.1s"><em>when it's fullest.</em></i></span>
+    </h2>
+    <p class="body rise" style="--d:.2s">We pick our peonies early in the morning, when the petals hold the most water, and press them the same day. The extract keeps everything the flower had.</p>
+  </div>
+</section>
+
+<section class="scene" id="cream">
+  <div class="col">
+    <div class="rule"></div>
+    <p class="eyebrow"><span class="ln"><i>The cream</i></span></p>
+    <h2 class="display"><span class="ln"><i>One jar, <em>three jobs.</em></i></span></h2>
+    <div class="tlist">
+      <div class="trow rise" style="--d:.08s"><span class="num">i</span><h3>All-day hydration</h3><p>Hyaluronic acid holds water in your skin from morning to night.</p></div>
+      <div class="trow rise" style="--d:.16s"><span class="num">ii</span><h3>Smoother-looking skin</h3><p>Fine lines look softer after four weeks of daily use.</p></div>
+      <div class="trow rise" style="--d:.24s"><span class="num">iii</span><h3>A calmer, even tone</h3><p>Peony extract takes the edge off redness.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="texture">
+  <div class="col">
+    <div class="rule"></div>
+    <p class="eyebrow"><span class="ln"><i>The texture</i></span></p>
+    <h2 class="display">
+      <span class="ln"><i>Whipped,</i></span>
+      <span class="ln"><i style="--d:.1s"><em>then it melts.</em></i></span>
+    </h2>
+    <p class="body rise" style="--d:.2s">It feels light when you pick it up and sinks in as soon as it touches warm skin. No film and no shine, just soft skin under your makeup.</p>
+  </div>
+</section>
+
+<section class="scene" id="line">
+  <div class="col">
+    <div class="rule"></div>
+    <p class="eyebrow"><span class="ln"><i>The line</i></span></p>
+    <h2 class="display">
+      <span class="ln"><i>Four pieces,</i></span>
+      <span class="ln"><i style="--d:.1s"><em>one ritual.</em></i></span>
+    </h2>
+    <p class="body rise" style="--d:.2s">The cream is the heart of it. Add the serum in the morning, the eye balm at night and the oil when your skin asks for more.</p>
+    <div class="actions rise" style="--d:.3s"><a class="btn" href="#collection">Shop the line</a></div>
+  </div>
+</section>
+
+<section class="collection" id="collection">
+  <div class="chead">
+    <p class="eyebrow rise">The line</p>
+    <h2 class="display rise" style="--d:.08s">Four pieces, <em>one peony.</em></h2>
+    <p class="body rise" style="--d:.16s">Every piece comes in the same heavy crystal with a lacquer cap, and every one of them can be refilled.</p>
+  </div>
+  <div class="grid">
+    <article class="pcard rise" style="--d:.06s" data-sku="cream" data-name="Peony Renewal Cream" data-price="128" data-img="catalog/cream.webp" data-note="Peony · Hyaluronic acid">
+      <div class="pframe"><img src="catalog/cream.webp" alt="Peony Renewal Cream, a crystal jar with a plum lacquer cap" loading="lazy" width="928" height="1152"></div>
+      <div class="pinfo"><h3>Renewal Cream</h3><p class="pnote">Peony · Hyaluronic acid</p><span class="pprice">$128</span></div></article>
+    <article class="pcard rise" style="--d:.12s" data-sku="serum" data-name="Peony Dew Serum" data-price="96" data-img="catalog/serum.webp" data-note="Peony · Niacinamide">
+      <div class="pframe"><img src="catalog/serum.webp" alt="Peony Dew Serum, a tall crystal dropper bottle" loading="lazy" width="928" height="1152"></div>
+      <div class="pinfo"><h3>Dew Serum</h3><p class="pnote">Peony · Niacinamide</p><span class="pprice">$96</span></div></article>
+    <article class="pcard rise" style="--d:.18s" data-sku="eye" data-name="Peony Eye Balm" data-price="72" data-img="catalog/eye.webp" data-note="Peony · Caffeine">
+      <div class="pframe"><img src="catalog/eye.webp" alt="Peony Eye Balm, a small crystal pot" loading="lazy" width="928" height="1152"></div>
+      <div class="pinfo"><h3>Eye Balm</h3><p class="pnote">Peony · Caffeine</p><span class="pprice">$72</span></div></article>
+    <article class="pcard rise" style="--d:.24s" data-sku="oil" data-name="Peony Night Oil" data-price="88" data-img="catalog/oil.webp" data-note="Peony · Rosehip">
+      <div class="pframe"><img src="catalog/oil.webp" alt="Peony Night Oil, a round crystal flacon of pink oil" loading="lazy" width="928" height="1152"></div>
+      <div class="pinfo"><h3>Night Oil</h3><p class="pnote">Peony · Rosehip</p><span class="pprice">$88</span></div></article>
+  </div>
+</section>
+
+<footer class="foot" id="end">
+  <div class="foot-in">
+    <div class="fmain rise">
+      <div>
+        <p class="flogo">PIVOINE</p>
+        <p class="ftag">Peony skincare, made in small batches and shipped from New York. Every jar can be refilled.</p>
+      </div>
+      <nav class="fcol">
+        <h4>Shop</h4>
+        <a href="#collection">Renewal Cream</a>
+        <a href="#collection">Dew Serum</a>
+        <a href="#collection">Eye Balm</a>
+        <a href="#collection">Night Oil</a>
+      </nav>
+      <nav class="fcol">
+        <h4>Help</h4>
+        <a href="#">Shipping &amp; returns</a>
+        <a href="#">Refills</a>
+        <a href="#">Questions</a>
+        <a href="#">Contact</a>
+      </nav>
+      <div class="fcol">
+        <h4>Studio</h4>
+        <p>New York, NY</p>
+        <p>Free shipping on orders over $100</p>
+      </div>
+    </div>
+    <div class="fbar rise" style="--d:.12s">
+      <span>© 2026 Pivoine</span>
+      <div class="flegal"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Accessibility</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="lenis.min.js"></script>
+<script src="framemap.js"></script>
+<script>
+(() => {
+  "use strict";
+  const html=document.documentElement; html.className="js";
+  const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+  const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const COARSE=matchMedia("(pointer:coarse)").matches;
+  const LOWMEM=(navigator.deviceMemory||8)<=4;
+  /* ── MODO GRABACIÓN (?film=1) ────────────────────────────────────────────────
+     Para FILMAR la pantalla, no para visitantes: el set entero se decodifica antes de soltar la
+     web, así el scroll es un blit puro. Cuesta RAM, por eso se topa a ~3 GB (baja el ancho solo).
+       ?film=1        activa          &cap=1600   limita el ancho residente
+       &auto=1        barre solo      &secs=20    duración de ese barrido (por defecto 14s)
+     Teclas: ESPACIO lanza un barrido desde donde estés · R vuelve arriba · H oculta el HUD */
+  const FILM=/[?&]film=1/i.test(location.search);
+  const FILM_CAP =(()=>{ const m=/[?&]cap=(\d+)/i.exec(location.search);    return m?+m[1]:0;  })();
+  const FILM_SECS=(()=>{ const m=/[?&]secs=([\d.]+)/i.exec(location.search); return m?+m[1]:14; })();
+  const FILM_AUTO=/[?&]auto=1/i.test(location.search);
+  const FILM_LERP=(()=>{ const m=/[?&]lerp=([\d.]+)/i.exec(location.search); return m?+m[1]:.09; })();
+  if(FILM){ const s=document.createElement("style");
+    s.textContent="html{scrollbar-width:none}html::-webkit-scrollbar{display:none}";
+    document.head.appendChild(s); }
+  const EASE_TAU=COARSE?12:28;                // film-cursor inertia (ms time-constant), TIME-based:
+                                              // a per-frame factor converges 4x slower at 60Hz than
+                                              // at 240Hz. Touch: the OS already flings, so ~12ms.
+  const pad=i=>String(i+1).padStart(4,"0");   // frames on disk are 1-indexed: f_0001…
+
+  /* ── LA BOBINA Y SUS TRES CAPAS (24-sep, tras "le faltan muchísimos frames, pega saltos") ──
+     La bobina ya no son los ~720 reales de Kling a 24 fps: son ~1.200 fotogramas sacados de RIFE
+     4x a PASO DE MOVIMIENTO IGUAL (galatea/tools/build_film_rife.py) — cada paso mueve ~2,5 px
+     del fotograma nativo, en vez de 3-14 px. Con tantos, "todo decodificado y residente" ya no
+     cabe; en el móvil no cabía ni con 700, y por eso se cargaba 1 de cada 5: ESE era el salto.
+       · bytes   — los ficheros COMPRIMIDOS de toda la bobina, en memoria (50-90 MB). Bajan de
+                   grueso a fino: el arranque denso primero y luego paso 64, 32 … 1, así que desde
+                   el primer segundo cualquier punto de la película tiene un fotograma cerca.
+       · ventana — fotogramas DECODIFICADOS alrededor del cursor, a ancho de pantalla, pedidos por
+                   delante en la dirección del scroll tanto como tarda un decode. Es lo que se ve
+                   casi siempre: denso y nítido.
+       · lo      — 1 de cada k, pequeño y residente: solo para un fling más rápido que el
+                   decodificador, donde el ojo no resuelve ni el paso ni la nitidez.
+     En reposo, el fotograma exacto a resolución nativa.
+     Por qué NO un <video> scrubbeado: cada seek de un all-intra 4K cuesta ~47 ms ⇒ techo ~21 fps
+     (medido: 33 fotogramas distintos de 241 en un flick). Decode siempre fetch→blob→
+     createImageBitmap en un WORKER, nunca `new Image()` (decode en el hilo principal = tirones). */
+  const VARIANTS={
+    /* móvil vertical: se mueve con `frames-pm` (720 px: 8 ms de decode contra 18 del
+       nativo, medido, y la ventana entera cabe en la línea de ~250 MB de WebKit) y se para en el
+       nativo 1072 de `frames-p` */
+    portrait:{ mo:"frames-pm/", moExt:"webp", mw:720, hi:"frames-p/", hiExt:"webp", total:(window.__FMAP||{}).portrait_n||714, sw:1072, sh:1928, key:"portrait", fx:.6 },
+    desktop: { mo:"frames/", moExt:"webp", mw:1928, hi:"frames/", hiExt:"webp", total:(window.__FMAP||{}).desktop_n||718, sw:1928, sh:1072, key:"desktop", fx:.6 },
+    /* fx: where the cover-fit crop lands horizontally. .6 keeps the centred jar of the middle acts
+       out of the text column on a 16:10 laptop and keeps the overhead cap in frame. */
+  };
+  /* una ventana vertical en un ordenador (monitor girado) no tiene el problema de memoria del
+     móvil: se mueve directamente con el nativo */
+  if(!COARSE){ Object.assign(VARIANTS.portrait,{mo:"frames-p/",moExt:"webp",mw:1072}); }
+  function pickVariant(){ const ar=innerWidth/Math.max(1,innerHeight);
+    if(ar<0.85)return VARIANTS.portrait;
+    return VARIANTS.desktop; }
+  let active=pickVariant(), N=active.total, gen=0, cropGen=0;   // gen invalidates in-flight work across a variant swap
+  /* the frames are served `immutable` (deploy_ascentatrack.py): a re-bake keeps the same names,
+     so AV MUST go up with every re-bake or returning visitors see the old film for a year */
+  const AV="3";   // 3 (24-sep): la v2 quedó envenenada en el borde de Cloudflare — ver isImg()
+  const srcMo=i=>active.mo+"f_"+pad(i)+"."+active.moExt+"?v="+AV;
+  const srcHi=i=>active.hi+"f_"+pad(i)+"."+active.hiExt+"?v="+AV;
+  /* scroll progress -> frame (framemap.js: lineal dentro de cada acto, porque los fotogramas ya
+     van a movimiento igual; el reparto ENTRE actos es editorial) */
+  function fmap(p){ const m=(window.__FMAP||{})[active.key]; if(!m||m.length<2)return p*(N-1);
+    const x=clamp(p,0,1)*(m.length-1), k=Math.min(m.length-2,Math.floor(x)); return m[k]+(m[k+1]-m[k])*(x-k); }
+
+  const canvas=document.getElementById("film");
+  const ctx=canvas.getContext("2d",{alpha:false});       // opaque: cheaper compositing
+  /* at 4-5K backing stores, GPU context loss is a when, not an if — unhandled it's a black film */
+  canvas.addEventListener("contextlost",e=>e.preventDefault());
+  canvas.addEventListener("contextrestored",()=>{ ctx.imageSmoothingEnabled=true; paint(true); });
+  const veil=document.getElementById("veil"), bar=document.getElementById("bar");
+  /* progress bar gets its transform written DIRECTLY: a custom property on <html>
+     invalidates style for the whole document on every film frame — phones feel it */
+  const prgEl=document.querySelector(".prog");
+  let lastProg=-1;
+  function setProg(){ const v=cur/Math.max(1,N-1); if(Math.abs(v-lastProg)<0.0005)return; lastProg=v;
+    if(prgEl)prgEl.style.transform="scaleX("+v.toFixed(4)+")"; }
+  const DBG=/[?&]debug/i.test(location.search), dbgEl=document.getElementById("dbg");
+  if(DBG&&dbgEl)dbgEl.style.display="block";
+  let dbgTier="—", dbgIdx=-1, dbgImW=0, dbgScale=1, dfps=0, dfpsN=0, dfpsT=performance.now(), vfN=0, vfps=0;
+  /* lo que dibuja el motor, contado — para medir sin mirar (tests/medidas headless) */
+  const ST=window.__filmStats={draws:0,exact:0,near:0,lo:0,none:0,offMax:0,offSum:0,moving:0,holds:0,bytes:0,n:0,lo_n:0};
+  const TRACE=/[?&]trace/i.test(location.search)?(window.__filmTrace=[]):null;   // [t, cursor, fotograma dibujado, capa]
+
+  let bytes=[], bState=new Uint8Array(0), loadedB=0;     // Blob comprimido por fotograma de la capa `mo`
+  let lo=[], LO_K=1, LO_W=0, loN=0, loBusy=0; const loQ=[];
+  const win=new Map(), winPending=new Set();
+  let restBmp=null, restI=-1, restPending=-1, hiBusy=0, hiMs=0, decMs=0;   // hiMs: latencia de pedir->tener (con cola) · decMs: el decode puro
+  let dpr=1, RENDER_CAP=5200, MO_W=0, MO_CROP=null, REST_W=0, HI_CROP=null, WIN_CAP=32, BAND_MB=0, REST_SAME=true;
+  /* ImageBitmaps live OUTSIDE the JS heap. WebKit's own engineers put the safe zone for decoded
+     page media on iPhone at ~150-250MB (jetsam kills WebContent near 2GB; iOS historically capped
+     canvas memory at 224-448MB): lo + ventana + reposo caben dentro de esa línea en el móvil. */
+  const qn=(k,d)=>{ const m=new RegExp("[?&]"+k+"=(\d+)").exec(location.search); return m?+m[1]:d; };   // solo para medir
+  const WIN_MB=qn("winmb",COARSE?(LOWMEM?70:130):600), LO_MB=qn("lomb",COARSE?(LOWMEM?40:70):900);
+  /* decodificadores en paralelo: un solo worker techa la ventana en ~40-60 fotogramas/s */
+  const NWK=COARSE?3:Math.max(2,Math.min(6,(navigator.hardwareConcurrency||4)-2));
+  const MAXHI=FILM?8:NWK*2, LO_C=COARSE?1:2, FETCH_C=COARSE?8:10;   // HTTP/2: con 6 en vuelo y 40 ms de latencia la red ni se llenaba
+
+  /* la banda que enseña el cover-fit, en las coordenadas de un fichero de ancho fw: se decodifica
+     SOLO esa banda, así cada píxel decodificado cae en un píxel físico */
+  function band(fw){
+    const fh=Math.round(fw*active.sh/active.sw), cw=canvas.width, ch=canvas.height;
+    const s=Math.max(cw/fw,ch/fh), bw=Math.min(fw,Math.round(cw/s)), bh=Math.min(fh,Math.round(ch/s));
+    return (bw<fw-4||bh<fh-4)?{sx:Math.round((fw-bw)*(active.fx??.5)),sy:(fh-bh)>>1,sw:bw,sh:bh}:{sx:0,sy:0,sw:fw,sh:fh,full:true};
+  }
+  function tiers(keep){
+    const cw=canvas.width;
+    const bm=band(active.mw); MO_CROP=bm.full?null:{sx:bm.sx,sy:bm.sy,sw:bm.sw,sh:bm.sh};
+    /* 0 = ancho NATIVO de la banda: bajar de escala lo hace drawImage y sale nítido; remuestrear en
+       el decode por un 4 % cuesta el triple (medido en meridian). Solo se reduce si sobra mucho. */
+    MO_W=bm.sw<=cw*1.3?0:cw;
+    if(FILM){ const fit=Math.floor(Math.sqrt(3000*1048576*bm.sw/(4*N*bm.sh)));
+      const w=Math.min(bm.sw,FILM_CAP||1e9,fit); MO_W=w<bm.sw?w:0; }
+    const mw=MO_W||bm.sw; BAND_MB=mw*Math.round(bm.sh*mw/bm.sw)*4/1048576;
+    WIN_CAP=FILM?Infinity:clamp(Math.floor(WIN_MB/BAND_MB),16,COARSE?48:96);
+    const bh=band(active.sw); HI_CROP=bh.full?null:{sx:bh.sx,sy:bh.sy,sw:bh.sw,sh:bh.sh};
+    REST_W=bh.sw<=cw*1.3?0:cw;
+    /* en escritorio la ventana YA es el nativo a ancho de pantalla: el reposo no pide nada aparte */
+    REST_SAME=active.hi===active.mo&&MO_W===REST_W;
+    if(keep){ restI=-1; restPending=-1; return; }       // URL-bar jitter: keep the decoded window, just refetch the resting frame with the new crop
+    cropGen++;
+    for(const b of win.values())if(b.close)b.close();
+    win.clear(); winPending.clear();
+    if(restBmp&&restBmp.close)restBmp.close(); restBmp=null; restI=-1; restPending=-1;
+    lastBmp=null;
+  }
+  function resize(keep){
+    dpr=Math.min(devicePixelRatio||1,2);                // full device resolution
+    /* size from the canvas's own CSS box, NOT innerWidth: with a classic scrollbar the
+       fixed element is narrower (5105 vs 5120) and the mismatch resamples every blit */
+    const r=canvas.getBoundingClientRect();
+    const cw=Math.max(1,Math.round(r.width*dpr)), ch=Math.max(1,Math.round(r.height*dpr));
+    const k=Math.min(1,RENDER_CAP/Math.max(cw,ch));     // watchdog lowers this only on weak GPUs
+    canvas.width=Math.max(1,Math.round(cw*k)); canvas.height=Math.max(1,Math.round(ch*k));
+    ctx.imageSmoothingEnabled=true;
+    if(!keep)LVH=innerHeight;                           // real resize: re-anchor the scroll denominator
+    tiers(keep); paint(true);
+    if(FILM&&!keep&&filmDone){ filmDone=false; filmN=0; veilGone=false;
+      veil.classList.remove("gone"); document.body.classList.remove("ready"); filmPreload(); }
+  }
+  /* Safari doesn't REJECT unknown createImageBitmap options — it silently IGNORES resizeWidth and
+     hands back the full-res master. Probe once; if resize is a no-op, downscale by hand. Sin
+     resize (la ventana y el reposo van a ancho nativo) ese camino ni se pisa. */
+  let RESIZE_OK=true;
+  const PROBE=(async()=>{ try{ const b=await createImageBitmap(new ImageData(8,8),{resizeWidth:4});
+      RESIZE_OK=b.width===4; if(b.close)b.close(); }catch(_){ RESIZE_OK=false; } })();
+  function scaleByHand(bl,w,crop){
+    return createImageBitmap(bl).then(b=>{
+      const sx=crop?crop.sx:0, sy=crop?crop.sy:0, sw=crop?crop.sw:b.width, sh=crop?crop.sh:b.height;
+      const c=document.createElement("canvas");
+      c.width=Math.min(w,sw); c.height=Math.max(1,Math.round(sh*c.width/sw));
+      const cx=c.getContext("2d"); cx.imageSmoothingQuality="high";
+      cx.drawImage(b,sx,sy,sw,sh,0,0,c.width,c.height); if(b.close)b.close(); return c;
+    });
+  }
+  function decodeMain(j){
+    const get=j.blob?Promise.resolve(j.blob):fetch(j.url).then(rs=>isImg(rs)?rs:fetch(j.url+"&r=1")).then(rs=>{ if(!isImg(rs))throw 0; return rs.blob(); });
+    return get.then(bl=>PROBE.then(()=>{
+      const c=j.crop;
+      if(!j.w)return c?createImageBitmap(bl,c.sx,c.sy,c.sw,c.sh):createImageBitmap(bl);
+      if(!RESIZE_OK)return scaleByHand(bl,j.w,c);
+      const o={resizeWidth:j.w,resizeQuality:"high"};
+      return (c?createImageBitmap(bl,c.sx,c.sy,c.sw,c.sh,o):createImageBitmap(bl,o)).catch(()=>scaleByHand(bl,j.w,c));
+    }));
+  }
+  /* ── decode in a WORKER POOL, transfer the bitmaps back (zero-copy) ──────────────
+     Blink only guarantees off-main-thread createImageBitmap in Chrome; in WebKit a main-thread
+     call is exactly where the decode may run. The blob travels by reference (no copy). Falls back
+     to in-page decode when the worker can't deliver. */
+  let WK=null, WK_RESIZE=null, wkId=0; const wkJobs=new Map(); const WKS=[];
+  try{
+    const wsrc=
+      "let OK=null;const probe=(async()=>{try{const b=await createImageBitmap(new ImageData(8,8),{resizeWidth:4});OK=b.width===4;if(b.close)b.close();}catch(_){OK=false;}postMessage({probe:OK});})();"+
+      "async function scale(bl,w,crop){const b=await createImageBitmap(bl);const sx=crop?crop.sx:0,sy=crop?crop.sy:0,sw=crop?crop.sw:b.width,sh=crop?crop.sh:b.height;const cw=Math.min(w,sw),ch=Math.max(1,Math.round(sh*cw/sw));const c=new OffscreenCanvas(cw,ch),cx=c.getContext('2d');cx.imageSmoothingQuality='high';cx.drawImage(b,sx,sy,sw,sh,0,0,cw,ch);if(b.close)b.close();return c.transferToImageBitmap();}"+
+      "onmessage=async e=>{const m=e.data;const t0=performance.now();try{let bl=m.blob;if(!bl){let rs=await fetch(m.url);if(!rs.ok||(rs.headers.get('content-type')||'').startsWith('text/'))rs=await fetch(m.url+'&r=1');if(!rs.ok||(rs.headers.get('content-type')||'').startsWith('text/'))throw 0;bl=await rs.blob();}const c=m.crop;let b;"+
+      "if(!m.w){b=await (c?createImageBitmap(bl,c.sx,c.sy,c.sw,c.sh):createImageBitmap(bl));}"+
+      "else{await probe;if(!OK){b=await scale(bl,m.w,c);}else{const o={resizeWidth:m.w,resizeQuality:'high'};b=await (c?createImageBitmap(bl,c.sx,c.sy,c.sw,c.sh,o):createImageBitmap(bl,o)).catch(()=>scale(bl,m.w,c));}}"+
+      "postMessage({id:m.id,bmp:b,ms:performance.now()-t0},[b]);}catch(_){postMessage({id:m.id,err:1});}};";
+    const wurl=URL.createObjectURL(new Blob([wsrc],{type:"text/javascript"}));
+    const onmsg=e=>{ const m=e.data;
+      if(m.probe!==undefined){ WK_RESIZE=m.probe; return; }
+      const j=wkJobs.get(m.id); if(!j)return; wkJobs.delete(m.id);
+      if(m.ms&&j.win)decMs=decMs?decMs*0.85+m.ms*0.15:m.ms;   // decode PURO (sin la cola del worker): es la capacidad
+      m.err?j.reject(0):j.resolve(m.bmp);
+    };
+    for(let n=0;n<NWK;n++){
+      const w=new Worker(wurl); w._n=0;
+      w.onmessage=onmsg;
+      /* sólo se caen los trabajos de ESE worker: si se rechazan los del resto, los contadores
+         quedan descuadrados y la ventana se apaga para siempre */
+      w.onerror=()=>{ w.terminate();
+        const ix=WKS.indexOf(w); if(ix>=0)WKS.splice(ix,1); WK=WKS[0]||null;
+        for(const [id,j] of wkJobs)if(j.w===w){ wkJobs.delete(id); j.reject(0); } };
+      WKS.push(w);
+    }
+    WK=WKS[0]||null;
+  }catch(_){ WK=null; }
+  function decode(j){
+    if(!WK)return decodeMain(j);
+    let wk=WKS[0]; for(const w of WKS)if(w._n<wk._n)wk=w;   // al menos ocupado: los decodes van en paralelo de verdad
+    wk._n++; const id=++wkId;
+    const p=new Promise((res,rej)=>wkJobs.set(id,{resolve:res,reject:rej,w:wk,win:!!j.win}));
+    /* a blob-URL worker can't resolve relative fetch URLs — send them absolute */
+    wk.postMessage({id,blob:j.blob||null,url:j.url?new URL(j.url,location.href).href:null,w:j.w||0,crop:j.crop||null});
+    return p.finally(()=>{ wk._n--; }).catch(()=>decodeMain(j));
+  }
+
+  /* ── bytes: toda la bobina comprimida, de grueso a fino ─────────────────────── */
+  let order=[], oPos=0, fIn=0, pumpN=0, fails=new Uint8Array(0);
+  /* un 200 NO prueba que llegó el fotograma. Medido el 24-sep: pedido segundos después de publicar,
+     Cloudflare contestó con la portada (HTML, respaldo de Pages para lo que aún no existe) y el
+     borde la guardó con la cabecera `immutable` de los fotogramas. Se rechaza el texto, y el
+     reintento lleva &r=N para no volver a caer en la entrada envenenada. */
+  const isImg=r=>r.ok&&!(r.headers.get("content-type")||"").startsWith("text/");   // octet-stream vale (servidores locales)
+  function buildOrder(){
+    const seen=new Uint8Array(N), o=[];
+    const add=i=>{ if(i>=0&&i<N&&!seen[i]){ seen[i]=1; o.push(i); } };
+    for(let i=0;i<Math.min(N,40);i++)add(i);            // el arranque denso: el hero y el primer scroll
+    for(let s=64;s>=1;s>>=1)for(let i=0;i<N;i+=s)add(i); // y el resto, grueso -> fino
+    add(N-1);
+    return o;
+  }
+  /* ESQUELETO (20-oct, Alex: "van lagueadas al abrir, tengo que estar unos segundos dentro"): el velo no se
+     abre hasta tener los 40 primeros fotogramas Y uno de cada 32 de TODA la película. Con solo 24 bajados el
+     primer deslizamiento caía en huecos y pintaba vacío. Es el suelo de arranque, no el de la carga completa. */
+  const skelOf=()=>{ const s=new Set(); for(let i=0;i<Math.min(N,40);i++)s.add(i); for(let i=0;i<N;i+=32)s.add(i); s.add(N-1); return [...s]; };
+  let SKEL=null;
+  function skelReady(){ if(!SKEL||SKEL.gen!==gen){ SKEL=skelOf(); SKEL.gen=gen; }
+    for(const i of SKEL)if(bState[i]<2)return false; return true; }
+  function fetchBytes(i,urgent){
+    if(bState[i])return; bState[i]=1; fIn++;
+    const g=gen;
+    fetch(srcMo(i)+(fails[i]?"&r="+fails[i]:""),{priority:(urgent||i<6)?"high":"low"}).then(r=>{ if(!isImg(r))throw 0; return r.blob(); })
+      .then(bl=>{ if(g!==gen||bState[i]===2)return; bytes[i]=bl; bState[i]=2; loadedB++; ST.bytes=loadedB; ST.n=N; onBytes(i); })
+      /* un corte de red en el móvil es lo normal: el fotograma vuelve al FINAL de la cola (si no, lejos
+         del cursor ya nadie lo pediría y esa zona quedaría hueca para siempre). A los 3 fallos se da
+         por perdido, para no entrar en un bucle de reintentos contra un 404. */
+      .catch(()=>{ if(g!==gen)return; if(++fails[i]>=3)bState[i]=3; else{ bState[i]=0; order.push(i); } })
+      .finally(()=>{ if(g!==gen)return; fIn--; pump(); });
+  }
+  /* la cola fija de grueso a fino garantiza que TODA la película tiene algo cerca, pero no sabe
+     hacia dónde va el visitante: medido en frío a 50 Mbps, la primera rueda pintaba el fotograma
+     exacto solo el 33 % de las veces. Dos de cada tres huecos van a lo que viene por delante del
+     cursor, denso; el tercero sigue con la cola, para que un fling largo nunca caiga en vacío. */
+  function nextAhead(){
+    const i0=Math.round(cur), R=COARSE?160:220;
+    for(let j=0;j<R;j++){ const i=i0+vdir*j; if(i<0||i>=N)break; if(!bState[i])return i; }
+    for(let j=1;j<=24;j++){ const i=i0-vdir*j; if(i<0||i>=N)break; if(!bState[i])return i; }
+    return -1;
+  }
+  /* PAQUETES (21-oct, el motor de Ambar del 20-oct). En frio el velo tardaba 12-34 s: no por los megas
+     sino por cientos de peticiones sueltas, cada una 0,15-0,4 s en empezar desde Turquia. Ahora los MISMOS
+     webp (ni recomprimidos ni reescalados) llegan en paquetes (tools/empaquetar_peliculas.py): h = 0-5,
+     s_NN = 1 de cada 32 (justo el esqueleto), c_NNNN = 16 seguidos. El velo sigue esperando al esqueleto (Bible 4.7), que
+     ahora son ~6 peticiones. Si un paquete falla dos veces, sus fotogramas vuelven al camino de uno en
+     uno. ?nopack = el camino viejo, para comparar. */
+  const PACK=COARSE&&!/[?&]nopack/i.test(location.search), PK_C=6, PK_B=16, PK_ESQ=32, PK_POR=32;
+  let pk=new Map(), pkIn=0, pkSeq=[], pkSeqPos=0, pkN=0;
+  const pkDir=()=>"packs/"+active.mo.replace(/\/$/,"")+"/";
+  const cName=c=>"c_"+String(c).padStart(4,"0")+".bin";
+  function pkFrames(name){
+    if(name==="h.bin"){ const o=[]; for(let i=0;i<Math.min(6,N);i++)o.push(i); return o; }
+    if(name[0]==="c"){ const c=+name.slice(2,6), o=[]; for(let i=c*PK_B;i<Math.min(N,(c+1)*PK_B);i++)o.push(i); return o; }
+    const k=+name.slice(2,4), e=[]; for(let i=0;i<N;i+=PK_ESQ)e.push(i); if((N-1)%PK_ESQ)e.push(N-1);
+    return e.slice(k*PK_POR,(k+1)*PK_POR);
+  }
+  function packReset(){
+    pk=new Map(); pkIn=0; pkSeqPos=0; pkN=Math.ceil(N/PK_B);
+    const nE=Math.ceil(N/PK_ESQ)+((N-1)%PK_ESQ?1:0), nS=Math.ceil(nE/PK_POR);
+    pkSeq=["h.bin"];
+    for(let k=0;k<nS;k++)pkSeq.push("s_"+String(k).padStart(2,"0")+".bin");
+    for(let c=0;c<Math.min(pkN,3);c++)pkSeq.push(cName(c));   // los 40 primeros del esqueleto
+  }
+  function packFetch(name,urgent){
+    const st=pk.get(name)||{s:0,f:0}; if(st.s)return; st.s=1; pk.set(name,st); pkIn++;
+    const g=gen, mine=pkFrames(name).filter(i=>!bState[i]); for(const i of mine)bState[i]=1;
+    fetch(pkDir()+name+"?v="+AV+".2",{priority:urgent?"high":"low"})
+      .then(r=>{ if(!isImg(r))throw 0; return r.arrayBuffer(); })
+      .then(buf=>{ if(g!==gen)return;
+        const dv=new DataView(buf); if(buf.byteLength<8||dv.getUint32(0,true)!==0x50424D41)throw 0;   // "AMBP"
+        const n=dv.getUint32(4,true), whole=new Blob([buf]); let off=8+n*8;
+        for(let k=0;k<n;k++){ const i=dv.getUint32(8+k*8,true), len=dv.getUint32(12+k*8,true);
+          if(i<N&&bState[i]!==2){ bytes[i]=whole.slice(off,off+len,"image/webp"); bState[i]=2; loadedB++; onBytes(i); }
+          off+=len; }
+        ST.bytes=loadedB; ST.n=N; st.s=2; })
+      .catch(()=>{ if(g!==gen)return; for(const i of mine)if(bState[i]===1)bState[i]=0; st.s=++st.f>=2?3:0; })
+      .finally(()=>{ if(g!==gen)return; pkIn--; pump(); });
+  }
+  /* true si el fotograma i ya va (o ira) por paquete; false si su paquete murio y toca pedirlo suelto */
+  function packUrgent(i){
+    const name=cName(Math.floor(i/PK_B)), st=pk.get(name);
+    if(st&&st.s===3)return false;
+    if((!st||!st.s)&&pkIn<PK_C+2)packFetch(name,true);
+    return true;
+  }
+  function nextChunk(){
+    const c0=Math.floor(Math.round(cur)/PK_B), free=c=>c>=0&&c<pkN&&!(pk.get(cName(c))||{}).s;
+    for(let j=0;j<12;j++){ const c=c0+vdir*j; if(free(c))return c; }
+    for(let j=1;j<=2;j++){ const c=c0-vdir*j; if(free(c))return c; }
+    for(let c=0;c<pkN;c++)if(free(c))return c;
+    return -1;
+  }
+  function pumpPacks(){
+    while(pkIn<PK_C){
+      while(pkSeqPos<pkSeq.length&&(pk.get(pkSeq[pkSeqPos])||{}).s)pkSeqPos++;
+      if(pkSeqPos<pkSeq.length){ packFetch(pkSeq[pkSeqPos],pkSeqPos<1); continue; }
+      if(!veilGone)return true;   // con el velo puesto solo lo que lo levanta: nada compite con el esqueleto
+      const c=nextChunk(); if(c<0)return false;
+      packFetch(cName(c),false);
+    }
+    return true;
+  }
+  function pump(){
+    if(PACK&&pumpPacks())return;
+    while(fIn<FETCH_C){
+      let i=pumpN++%3!==2?nextAhead():-1;
+      if(i<0){ while(oPos<order.length&&bState[order[oPos]])oPos++;
+        i=oPos<order.length?order[oPos++]:nextAhead(); }
+      if(i<0)return;
+      fetchBytes(i,false);
+    }
+  }
+  function onBytes(i){
+    if(i%LO_K===0)loQ.push(i);
+    if(bar&&!veilGone)bar.style.width=Math.min(100,Math.round(100*Math.min(loadedB,(SKEL||skelOf()).length)/(SKEL||skelOf()).length))+"%";
+  }
+  function pumpLo(){
+    while(loBusy<LO_C&&loQ.length&&hiBusy<MAXHI-1){
+      const i=loQ.shift(); if(lo[i]||!bytes[i])continue;
+      loBusy++; const g=gen;
+      decode({blob:bytes[i],w:LO_W}).then(b=>{ if(g!==gen){ if(b.close)b.close(); return; } lo[i]=b; loN++; ST.lo_n=loN; })
+        .catch(()=>{}).finally(()=>{ if(g===gen)loBusy--; });
+    }
+  }
+  function setupLo(){
+    LO_W=Math.min(COARSE?300:960,active.mw);
+    const mb=LO_W*(LO_W*active.sh/active.sw)*4/1048576;
+    LO_K=Math.max(1,Math.ceil(N*mb/LO_MB));
+    lo=new Array(N).fill(null); loN=0; loBusy=0; loQ.length=0;
+  }
+
+  /* ── la ventana: pedir por delante lo que se va a ver ──────────────────────── */
+  function need(i){
+    if(i<0||i>=N||win.has(i)||winPending.has(i))return;
+    if(bState[i]!==2){ if(!bState[i]&&!(PACK&&packUrgent(i))&&fIn<FETCH_C+4)fetchBytes(i,true); return; }   // llega antes que la cola de fondo
+    if(hiBusy>=MAXHI)return;
+    winPending.add(i); hiBusy++; const g=gen, cg=cropGen, t0=performance.now();
+    decode({blob:bytes[i],w:MO_W,crop:MO_CROP,win:1}).then(b=>{
+      const el=performance.now()-t0; hiMs=hiMs?hiMs*0.85+el*0.15:el;
+      if(g!==gen||cg!==cropGen){ if(b.close)b.close(); return; }
+      win.set(i,b); evict();
+    }).catch(()=>{}).finally(()=>{ hiBusy--; if(g===gen&&cg===cropGen)winPending.delete(i); });
+  }
+  /* se tira lo más lejano, y lo que queda POR DETRÁS del sentido del scroll cuenta el doble */
+  function evict(){
+    while(win.size>WIN_CAP){ let worst=-1,wd=-1;
+      for(const k of win.keys()){ let d=Math.abs(k-cur); if((k-cur)*vdir<0)d*=2; if(d>wd){ wd=d; worst=k; } }
+      const old=win.get(worst); win.delete(worst); if(old&&old.close)old.close(); }
+  }
+  function wantRest(i){
+    if((restI===i&&restBmp)||restPending===i)return;
+    restPending=i; const g=gen, cg=cropGen;
+    decode({url:srcHi(i),w:REST_W,crop:HI_CROP}).then(b=>{
+      if(g!==gen||cg!==cropGen||restPending!==i){ if(b.close)b.close(); return; }
+      if(restBmp&&restBmp.close)restBmp.close();
+      restBmp=b; restI=i; restPending=-1;
+    }).catch(()=>{ if(g===gen&&restPending===i)restPending=-1; });
+  }
+  /* MIRA HACIA DELANTE EL TIEMPO QUE TARDA UN DECODE, medido en vivo (hiMs). Pedir el fotograma
+     del cursor cuando la película corre a 300 fot/s y un decode tarda 25 ms es pedirlo para cuando
+     ya se ha pasado 7 fotogramas: medido (24-sep), así se quemaban los huecos del pool en
+     fotogramas que llegaban tarde y la imagen se quedaba un refresco quieta y luego saltaba. Se
+     pide a partir de DONDE ESTARÁ el cursor al llegar el decode, y si la película corre más de lo
+     que la máquina decodifica, 1 de cada `stride` — alineados a múltiplos del paso, para que la
+     lista no cambie en cada refresco y lo que está en vuelo siga sirviendo. */
+  let sStride=1, sAhead=0, sLead=0;
+  function schedule(){
+    const i0=Math.round(cur);
+    if(atRest){
+      need(i0);
+      if(!REST_SAME)wantRest(i0);
+      need(i0+1); need(i0-1); need(i0+2); need(i0-2);
+      return;
+    }
+    const fps=Math.abs(vel)*1000;                                     // fotogramas de película por segundo
+    const lat=Math.max(8,hiMs||30);                                   // pedir -> tener, con la cola
+    const capS=(WKS.length||1)*1000/Math.max(3,decMs||lat);          // decodes por segundo que da ESTA máquina
+    const stride=Math.max(1,Math.round(fps/(capS*0.75)));
+    const lead=Math.floor(fps*lat/1000*0.8);                          // lo que avanza el cursor mientras llega un decode
+    const span=Math.min(Math.floor(WIN_CAP*0.6),Math.ceil(fps*(lat+60)/1000)+3);
+    sStride=stride; sAhead=span; sLead=lead;
+    if(lead<=1)need(i0);
+    let k=i0+vdir*Math.max(1,lead);
+    if(stride>1)k=vdir>0?Math.ceil(k/stride)*stride:Math.floor(k/stride)*stride;
+    for(;Math.abs(k-i0)<=lead+span;k+=vdir*stride)need(k);
+    if(lead>1)need(i0);                                               // por si frena en seco
+    need(i0-vdir);                                                     // uno por detrás, por si se da la vuelta
+  }
+  /* qué se dibuja: el exacto de la ventana; si no está, el vecino NÍTIDO más cercano mientras quepa
+     en lo que la película se mueve en un refresco (a esa velocidad es invisible); si tampoco, la
+     rejilla gruesa `lo`. "Cercano y nítido gana a exacto y blando" en TODOS los escalones. */
+  function pick(){
+    const i=Math.round(cur);
+    if(atRest&&!FILM&&!REST_SAME&&restI===i&&restBmp)return [restBmp,"NATIVE(rest)",i];
+    let b=win.get(i); if(b)return [b,atRest?"NATIVE(win)":"win",i];
+    const tol=atRest?1:Math.max(1,Math.ceil(spd*1.5));
+    for(let d=1;d<=tol;d++){
+      b=win.get(i-vdir*d); if(b)return [b,"win±"+d,i-vdir*d];      // un pelín por detrás: lo natural
+      b=win.get(i+vdir*d); if(b)return [b,"win±"+d,i+vdir*d];
+    }
+    let wb=null,wd=1e9,wi=-1; for(const [k,v] of win){ const d=Math.abs(k-i); if(d<wd){ wd=d; wb=v; wi=k; } }
+    let lb=null,ld=1e9,li=-1; const k0=Math.round(i/LO_K)*LO_K;
+    for(let r=0;r<=N;r+=LO_K){ const a=k0-r, c=k0+r;
+      if(a>=0&&a<N&&lo[a]){ lb=lo[a]; ld=Math.abs(a-i); li=a; break; }
+      if(c<N&&lo[c]){ lb=lo[c]; ld=Math.abs(c-i); li=c; break; }
+      if(a<0&&c>=N)break; }
+    if(wb&&(wd<=Math.max(tol,3)||wd<=ld))return [wb,"win~"+wd,wi];
+    if(lb)return [lb,"lo",li];
+    return [null,"—",-1];
+  }
+  function blit(im){
+    const s=Math.max(canvas.width/im.width,canvas.height/im.height);   // cover
+    const w=Math.round(im.width*s), h=Math.round(im.height*s);
+    ctx.drawImage(im,Math.round((canvas.width-w)*(active.fx??.5)),Math.round((canvas.height-h)/2),w,h);
+    dbgImW=im.width; dbgScale=s;
+  }
+  /* UN fotograma entero y opaco, nunca un fundido de dos (bible 5.3-bis): la mezcla de dos
+     fotogramas separados unos píxeles es una doble exposición = desenfoque. Con el paso a 2,5 px
+     ya no hay nada que tapar. */
+  let lastBmp=null, lastDrawnAny=false;
+  function draw(bmp,tier){
+    vfN++; fvN++;
+    if(!bmp){ if(!lastDrawnAny){ ctx.fillStyle="#F2E6EC"; ctx.fillRect(0,0,canvas.width,canvas.height); } return; }   // nunca vacío: si no hay fotograma se queda el último
+    lastDrawnAny=true;
+    ctx.imageSmoothingQuality=tier==="lo"?"low":"high"; ctx.globalAlpha=1; blit(bmp);
+  }
+  function paint(force){ if(force)lastBmp=null; frame(); }
+  function frame(){
+    const [b,t,idx]=pick();
+    setProg();
+    if(!atRest){
+      ST.moving++;
+      const off=idx<0?0:Math.abs(idx-cur);
+      if(t==="lo")ST.lo++; else if(!b)ST.none++; else if(idx===Math.round(cur))ST.exact++; else ST.near++;
+      if(off>ST.offMax)ST.offMax=off; ST.offSum+=off;
+      if(b===lastBmp&&Math.abs(cur-lastCurDrawn)>=1)ST.holds++;
+    }
+    if(b&&!veilGone&&!FILM&&skelReady())hideVeil();
+    if(b===lastBmp&&b)return false;
+    lastBmp=b; lastCurDrawn=cur; dbgTier=t; dbgIdx=idx; ST.draws++;
+    draw(b,t);
+    return true;
+  }
+  let lastCurDrawn=0;
+
+  /* ── arranque ── */
+  let veilGone=false;
+  function hideVeil(){ if(veilGone)return; veilGone=true; veil.classList.add("gone"); document.body.classList.add("ready"); }
+  function load(){
+    if(FILM){ filmPreload(); return; }
+    pump();
+    setTimeout(hideVeil,12000);                          // never trap the visitor (grabando SÍ esperamos)
+  }
+
+  /* fase SOLO grabación: todos los fotogramas decodificados en `win` antes de soltar la web ⇒
+     el scroll no decodifica ni un byte durante la toma */
+  let filmDone=false, filmN=0;
+  function filmPreload(){
+    const g=gen, cg=cropGen; let next=0, inflight=0;
+    if(bar)bar.style.width="0%";
+    const step=()=>{
+      if(g!==gen||cg!==cropGen)return;
+      if(next>=N){ if(inflight===0){ filmDone=true; hideVeil(); paint(true); } return; }
+      const i=next++; inflight++;
+      decode({url:srcMo(i),w:MO_W,crop:MO_CROP}).then(b=>{
+        if(g!==gen||cg!==cropGen){ if(b.close)b.close(); return; }
+        win.set(i,b); filmN++;
+        if(bar)bar.style.width=Math.round(100*filmN/N)+"%";
+      }).catch(()=>{}).finally(()=>{ inflight--; step(); });
+    };
+    for(let k=0;k<MAXHI;k++)step();
+  }
+
+  /* HUD de grabación */
+  let fhud=null, fN=0, fT=performance.now(), ffps=0, fvN=0, fvfps=0;
+  function filmHud(){
+    if(!FILM)return;
+    if(!fhud){
+      fhud=document.createElement("div");
+      fhud.style.cssText="position:fixed;top:12px;left:12px;z-index:99;font:11px/1.6 ui-monospace,monospace;"+
+        "color:#C9A96A;background:rgba(6,4,10,.86);border:1px solid rgba(201,169,106,.35);"+
+        "padding:9px 13px;border-radius:6px;white-space:pre;pointer-events:none";
+      document.body.appendChild(fhud);
+      addEventListener("keydown",e=>{ if(e.key==="h"||e.key==="H")
+        fhud.style.display=fhud.style.display==="none"?"block":"none"; });
+    }
+    const now=performance.now(); fN++;
+    if(now-fT>=400){ ffps=Math.round(fN*1000/(now-fT)); fvfps=Math.round(fvN*1000/(now-fT)); fN=0; fvN=0; fT=now; }
+    fhud.textContent=
+      (filmDone?"● GRABACIÓN LISTA":"◌ precargando  "+filmN+"/"+N)+"\n"+
+      "canvas    "+canvas.width+"×"+canvas.height+"\n"+
+      "dibujando "+dbgTier+"\n"+
+      "  bitmap  "+dbgImW+"px  ×"+dbgScale.toFixed(2)+(dbgScale>1.25?"  ⚠":dbgScale>1.03?"  ~":"  ✓")+"\n"+
+      "residente "+win.size+" frames  ~"+Math.round(win.size*BAND_MB)+"MB\n"+
+      "film fps  "+fvfps+"   (rAF "+ffps+")\n"+
+      "decodes   "+hiBusy+" en vuelo"+(hiBusy&&filmDone?"   ⚠ deberia ser 0":"");
+  }
+
+  /* ONE rAF loop drives everything: read the (Lenis-smoothed) scroll, ease the film cursor toward
+     it, keep the window ahead of it, repaint ONLY when the bitmap to show actually changes. */
+  let target=0,rawTarget=0,cur=0,atRest=false,spd=0,vel=0,vdir=1,lastCur=0,prevT=0,still=0;
+  /* stable denominator: innerHeight breathes with the mobile URL bar; a moving denominator maps
+     the same scroll to a DIFFERENT frame mid-transition. Track the largest viewport seen. */
+  let LVH=innerHeight;
+  let FILM_END=1;
+  function measureEnd(){ const b=document.getElementById("line"); if(!b)return;
+    const r=b.getBoundingClientRect(); FILM_END=Math.max(1,scrollY+r.top+r.height/2-LVH/2); }
+  function prog(scroll){ if(innerHeight>LVH)LVH=innerHeight;
+    return clamp(scroll/FILM_END,0,1); }
+  let fbudget=17, lastRT=performance.now(), wTot=0, wLong=0, downgrades=0, lastPump=0;
+  function render(){
+    const now=performance.now(), dt=now-lastRT; lastRT=now;
+    if(DBG){ dfpsN++; if(now-dfpsT>=250){ const el=now-dfpsT; dfps=Math.round(dfpsN*1000/el); vfps=Math.round(vfN*1000/el); dfpsN=0; vfN=0; dfpsT=now;
+      dbgEl.textContent=
+        "variant  "+active.mo.replace(/\//,"")+" "+active.moExt+"  ("+N+" frames)\n"+
+        "canvas   "+canvas.width+"×"+canvas.height+"  dpr "+dpr.toFixed(2)+"\n"+
+        "DRAWING  "+dbgTier+"   frame "+dbgIdx+" ← cursor "+cur.toFixed(2)+"\n"+
+        "  bitmap "+dbgImW+"px  →  ×"+dbgScale.toFixed(2)+(dbgScale>1.25?"  ⚠ UPSCALE":dbgScale>1.03?"  ~ mild":"  ✓ sharp")+"\n"+
+        "speed    "+Math.round(Math.abs(vel)*1000)+" fot/s   stride "+sStride+"  ahead "+sAhead+"\n"+
+        "atRest   "+atRest+"   win "+win.size+"/"+WIN_CAP+" (~"+Math.round(win.size*BAND_MB)+"MB)   hiBusy "+hiBusy+"   decode "+Math.round(decMs)+"ms (espera "+Math.round(hiMs)+")\n"+
+        "FILM fps "+vfps+"   (rAF "+dfps+")\n"+
+        "bytes    "+loadedB+"/"+N+"   lo "+loN+" (1/"+LO_K+", "+LO_W+"px)\n"+
+        "exact "+ST.exact+"  near "+ST.near+"  lo "+ST.lo+"  holds "+ST.holds+"  off≤"+ST.offMax.toFixed(1)+"\n"+
+        (WK?(WK_RESIZE===false?"MANUAL-SCALE  ":"")+"WORKER×"+WKS.length:(RESIZE_OK?"":"MANUAL-SCALE  ")+"MAIN-DECODE");
+    } }
+    if(dt>3 && dt<fbudget) fbudget=dt;                    // min interval ≈ refresh period
+    still = Math.abs(rawTarget-prevT)<1e-4 ? still+1 : 0; // scroll input gone quiet?
+    prevT=rawTarget;
+    /* aterriza el cursor en un fotograma ENTERO en cuanto el scroll calla: sin eso se para en
+       10.7 y al pasar a reposo la imagen salta a round(cur). Grabando no: ahí la película congela. */
+    target = (still>2 && !FILM) ? Math.round(rawTarget) : rawTarget;
+    const d=target-cur;
+    cur = Math.abs(d)>0.0006 ? cur+d*(1-Math.exp(-Math.min(dt,50)/EASE_TAU)) : target;
+    const dv=(cur-lastCur)/Math.max(1,dt); vel=vel*0.6+dv*0.4;
+    spd=Math.abs(cur-lastCur)*(16.7/Math.max(1,dt)); lastCur=cur;  // fotogramas por refresco de 60 Hz
+    if(Math.abs(d)>0.02)vdir=d>0?1:-1;
+    atRest = still>5 && Math.abs(target-cur)<0.04;
+    schedule(); pumpLo();
+    if(loadedB<N&&fIn<FETCH_C&&now-lastPump>400){ lastPump=now; pump(); }   // vigilante: la cola nunca se queda parada
+    const drew=frame();
+    if(TRACE&&!atRest)TRACE.push([now,+cur.toFixed(3),dbgIdx,dbgTier==="lo"?2:dbgTier==="win"||dbgTier.startsWith("NATIVE")?0:1]);
+    if(drew&&!atRest&&downgrades<2&&loadedB>=N){       // sample only while scrubbing, after load
+      wTot++; if(dt>Math.max(fbudget*3,28)) wLong++;    // a real jank, NOT a 240→120Hz dip
+      if(wTot>=90){ if(wLong/wTot>0.5 && RENDER_CAP>1792){ RENDER_CAP=RENDER_CAP>2560?2560:1792; downgrades++; resize(); } wTot=0; wLong=0; }
+    }
+  }
+  function onScroll(scroll){
+    rawTarget=Math.min(N-1,fmap(prog(scroll)));
+    document.body.classList.toggle("scrolled",scroll>24); // dissolve the hero labels
+  }
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);} }),
+    {threshold:.2,rootMargin:"0px 0px -12% 0px"});
+  document.querySelectorAll(".scene,.foot,.collection").forEach(s=>io.observe(s));
+
+  /* hot-swap the whole reel when the viewport crosses a device class (rotate a phone).
+     Fade out, rebuild, fade back. */
+  function applyVariant(v){
+    active=v; N=v.total; gen++;                         // voids every in-flight fetch/decode of the old reel
+    bytes=new Array(N).fill(null); bState=new Uint8Array(N); fails=new Uint8Array(N); loadedB=0; fIn=0;
+    order=buildOrder(); oPos=0; packReset();
+    for(const b of lo)if(b&&b.close)b.close();
+    setupLo();
+    for(const b of win.values())if(b.close)b.close(); win.clear(); winPending.clear();
+    if(restBmp&&restBmp.close)restBmp.close(); restBmp=null; restI=-1; restPending=-1; lastBmp=null;
+  }
+  function switchVariant(v){
+    const frac=N>1?cur/(N-1):0;                         // hold scroll position across reels
+    canvas.style.transition="opacity .3s ease"; canvas.style.opacity="0";
+    setTimeout(()=>{
+      applyVariant(v);
+      cur=target=rawTarget=frac*(N-1);
+      resize(); load();
+      const t0=performance.now();
+      (function ready(){
+        if(win.size>0||performance.now()-t0>1600){ canvas.style.opacity="1"; paint(true); }
+        else requestAnimationFrame(ready);
+      })();
+    },310);
+  }
+  let rzT,lastW=innerWidth,lastH=innerHeight;
+  addEventListener("resize",()=>{ clearTimeout(rzT); rzT=setTimeout(()=>{
+    const v=pickVariant();
+    /* same width + small height delta = the mobile URL bar sliding, not a real resize:
+       keep the decoded window or every direction change costs a decode storm */
+    const jitter=v===active&&innerWidth===lastW&&Math.abs(innerHeight-lastH)<160;
+    lastW=innerWidth; lastH=innerHeight;
+    if(v!==active) switchVariant(v); else resize(jitter);
+  },160); },{passive:true});
+  applyVariant(active);
+  resize(); measureEnd(); load();
+  addEventListener("resize",()=>setTimeout(measureEnd,200),{passive:true});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measureEnd);
+  addEventListener("load",measureEnd);
+
+  if(reduced){ cur=target=rawTarget=Math.round((N-1)*0.5);
+    document.querySelectorAll(".scene,.foot,.collection").forEach(s=>s.classList.add("in"));
+    const t0=performance.now(); (function loop(){ render(); if(performance.now()-t0<10000)requestAnimationFrame(loop); })();
+    return; }
+
+  /* Grabando, el scroll lo llevas TÚ con la rueda — ese es el plano. El barrido automático es
+     opt-in (&auto=1) y lo interrumpe cualquier toque de rueda. */
+  if(FILM){
+    const maxY=()=>Math.max(1,html.scrollHeight-innerHeight);
+    const sweep=from=>{ if(!window.lenis)return;
+      const left=1-(from/maxY());
+      window.lenis.scrollTo(maxY(),{duration:Math.max(.5,FILM_SECS*left),easing:t=>t}); };  // lineal = velocidad constante
+    addEventListener("keydown",e=>{
+      if(e.code==="Space"){ e.preventDefault(); sweep(scrollY); }
+      if(e.key==="r"||e.key==="R"){ window.lenis&&window.lenis.scrollTo(0,{immediate:true}); }
+    });
+    if(FILM_AUTO){ const t=setInterval(()=>{ if(filmDone){ clearInterval(t); sweep(0); } },120); }
+  }
+
+  if(window.Lenis){
+    const lenis=new Lenis({lerp:FILM?FILM_LERP:.12,wheelMultiplier:1,smoothWheel:true});
+    window.lenis=lenis;
+    /* el asa que buscan los capturadores (build_studio_card, ig_webcap, los anuncios): Lenis para
+       moverse sin pisarle la posición, y `listo()` = el fotograma EXACTO de esta posición ya está
+       pintado y nítido. Sin esperar a eso una captura pinta el vecino o la rejilla gruesa. */
+    window.__film={ lenis:()=>lenis,
+      listo:()=>Math.abs(target-cur)<0.02&&dbgIdx===Math.round(cur)&&(dbgTier==="win"||dbgTier.startsWith("NATIVE")),
+      /* para los capturadores con RELOJ VIRTUAL (el anuncio): el cursor va donde diga el reloj y no se
+         le espera a que llegue; solo a que el fotograma de ESE cursor este pintado. `pinta()` repinta
+         sin avanzar el tiempo, para cuando el decode llega despues del ultimo rAF. */
+      exacto:()=>dbgIdx===Math.round(cur)&&(dbgTier==="win"||dbgTier.startsWith("NATIVE")),
+      pinta:()=>{ schedule(); frame(); } };
+    lenis.on("scroll",({scroll})=>onScroll(scroll));
+    (function loop(t){ lenis.raf(t); render(); filmHud(); requestAnimationFrame(loop); })();  // one loop: scroll + film
+    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
+      const href=a.getAttribute("href");
+      if(href==="#"){e.preventDefault();return;}         // inert placeholder (legal) links
+      const t=document.querySelector(href);
+      if(t){e.preventDefault();lenis.scrollTo(t,{duration:1.5});}
+    }));
+    onScroll(0);
+  } else {
+    addEventListener("scroll",()=>onScroll(scrollY),{passive:true});
+    (function loop(){ render(); filmHud(); requestAnimationFrame(loop); })();      // fallback: own render loop
+    onScroll(scrollY);
+  }
+})();
+</script>
+
+<script>window.CHECKOUT_CONFIG={house:"Pivoine",logo:"logo.png"};</script>
+<script src="checkout.js" defer></script>
+
+</body>
+</html>

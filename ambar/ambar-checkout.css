@@ -1,0 +1,56 @@
+/* ═══ ÁMBAR — the shared checkout module, in blood-orange daylight ═══════════════════════
+   checkout.css is the shared module and stays untouched (dark and gold, for Parfum). This layer
+   re-themes it like the page: the orange of the backdrop for the actions, ivory type on them, a cream
+   glass for the bag — and every text at 14 px or more (APCA has no passing contrast below it). The 3D
+   card stays dark on purpose: it is a card, its type stays light on it. */
+:root{
+  --co-accent:#B93806; --co-accent-hi:#8A1A0C; --co-ink:#1E0A0C; --co-muted:#341216;
+  --co-line:rgba(30,10,12,.14); --co-glass:rgba(255,244,232,.92); --co-field:rgba(30,10,12,.035);
+  --co-serif:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; --co-sans:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+}
+.co-bagbtn{width:42px;height:42px;color:var(--co-ink);border-color:rgba(30,10,12,.2);background:rgba(255,255,255,.5)}
+.co-bagbtn svg{width:18px;height:18px}
+.co-bagbtn b{color:#FFF4E8;background:#B93806;font:700 .72rem/17px var(--co-sans)}
+.co-add{font:700 .95rem/1 var(--co-sans);letter-spacing:.03em;text-transform:none;color:#FFF4E8;min-height:46px;padding:0 1.4rem;
+  background:linear-gradient(135deg,#EE6A12,#D9480C 58%,#B93806);border:0;box-shadow:0 10px 26px -12px rgba(185,56,6,.8)}
+.co-add:hover,.co-add.done{background:linear-gradient(135deg,#F57A1F,#E0500E 58%,#BF3C08);color:#FFF4E8}
+.co-scrim{background:rgba(30,10,12,.32)}
+.co-bag h2{font-weight:600}
+.co-bag h2 small,.co-row,.co-line p,.co-line .rm,.co-f label,.co-brand,.co-steps,.co-back,.co-flipbtn,.co-safe,.co-demo{font-size:.875rem;letter-spacing:.04em}
+.co-row{text-transform:none}
+.co-line p,.co-f label,.co-back,.co-flipbtn,.co-bag h2 small{text-transform:none}
+.co-line .th{background:#EFE8E4;border:1px solid rgba(30,10,12,.12)}
+.co-line .amt,.co-row.total strong,.co-opt b,.co-total strong,.co-finale p strong{color:var(--co-accent-hi);font-weight:700}
+.co-qty span{font-size:.875rem}
+.co-cta{font:700 1rem/1 var(--co-sans);letter-spacing:.03em;text-transform:none;color:#FFF4E8;
+  background:linear-gradient(100deg,#EE6A12,#D9480C 55%,#B93806);box-shadow:0 12px 32px -12px rgba(185,56,6,.75)}
+.co-cta:hover{box-shadow:0 16px 40px -10px rgba(185,56,6,.85)}
+.co-steps li.now i{color:#FFF4E8}
+.co-panel::before{background:linear-gradient(135deg,rgba(238,106,18,.6),rgba(30,10,12,.08) 30%,rgba(30,10,12,.06) 70%,rgba(168,32,15,.5))}
+.co-summary,.co-total{background:rgba(30,10,12,.03)}
+.co-in:focus-within{box-shadow:0 0 0 3px rgba(185,56,6,.2)}
+.co-in input::placeholder{color:rgba(52,18,22,.6)}
+.co-in select option{color:#1E0A0C}
+.co-sub,.co-finale p{font-size:1rem;font-weight:500}
+.co-opt span{font-size:.95rem}.co-opt small{font-size:.875rem}
+.co-err{font-size:.875rem}
+.co-flipbtn{background:rgba(30,10,12,.03)}
+.co-spin{border-color:rgba(185,56,6,.22);border-top-color:var(--co-accent)}
+.co-halo i{background:conic-gradient(from 0deg,transparent 0 50%,rgba(217,72,12,.9) 68%,rgba(255,200,150,.95) 76%,rgba(168,32,15,.9) 86%,transparent 97%)}
+.co-ring i{background:conic-gradient(from 0deg,rgba(185,56,6,.18) 0 40%,#B93806 60%,#FFC896 72%,#EE6A12 84%,rgba(185,56,6,.18) 97%)}
+.co-glow{background:radial-gradient(60% 60% at 50% 50%,rgba(238,106,18,.3),transparent 70%)}
+/* the card itself: the near-black red of the slice's shadow with an orange light, light type on it */
+.co-face{background:radial-gradient(120% 90% at 100% 0%,rgba(238,106,18,.34),transparent 55%),
+  radial-gradient(90% 80% at 0% 100%,rgba(217,72,12,.2),transparent 60%),linear-gradient(145deg,#5A140A,#1E0A0C 60%,#34100C);
+  border-color:rgba(255,200,150,.3)}
+.co-num,.co-front .r3 .c-name,.co-front .r3 .c-exp,.co-front .net,.co-front .nfc{color:#FFF4E8}
+.co-front .tier{color:#FFC896}
+.co-front .r3 small{color:rgba(255,244,232,.64)}
+.co-rear .sig b{background:#FFF4E8;color:#1E0A0C}
+.co-rear p{color:rgba(255,244,232,.58)}
+@media(max-width:860px){
+  .co-view[data-v="payment"] .co-cardside{background:linear-gradient(rgba(255,244,232,.98) 88%,rgba(255,244,232,0))}
+}
+@media(pointer:coarse){
+  .co-bag,.co-panel::after{background:rgba(255,244,232,.97)}
+}
